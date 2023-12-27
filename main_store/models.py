@@ -61,11 +61,11 @@ class Vente(models.Model):
     montant_v = models.FloatField()
     client = models.ForeignKey(Client,on_delete=models.CASCADE)
     produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
-    #last field not sure depending on the product model
+    
 
 class Transfert(models.Model):
-    quantiteT = models.IntegerField()
-    dateT= models.DateField()
+    qte_t = models.IntegerField()
+    date_t= models.DateField()
     produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
 
