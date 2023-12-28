@@ -1,5 +1,5 @@
 from django.db import models
-from center.models import Centre
+
 # Create your models here.
 
 class Fournisseur(models.Model):
@@ -18,20 +18,20 @@ class Reglement(models.Model):
 
 class Stock(models.Model):
     num_s = models.AutoField(primary_key=True)
-    designation_s = models.CharField()
+    designation_s = models.CharField(max_length=50)
     qte_s = models.IntegerField()
     prix_achat = models.FloatField()
 
 
 class Produit(models.Model):
     code_P = models.AutoField(primary_key=True)
-    designationP = models.CharField()
+    designationP = models.CharField(max_length=50)
 
 class Achat(models.Model):
     num_a = models.AutoField(primary_key=True)
     qte_a = models.IntegerField()
     date_a = models.DateField()
-    type_Paiement_A = models.CharField()
+    type_Paiement_A = models.CharField(max_length=20)
     montant_A = models.FloatField()
     prix_unitaireHT = models.FloatField()
     fournisseur= models.ForeignKey(Fournisseur, on_delete = models.CASCADE)
@@ -57,11 +57,12 @@ class Vente(models.Model):
     num_v = models.AutoField(primary_key=True)
     qte_v = models.IntegerField()
     date_v = models.DateField()
-    type_paiement_v = models.CharField()
+    type_paiement_v = models.CharField(max_length=20)
     montant_v = models.FloatField()
     client = models.ForeignKey(Client,on_delete=models.CASCADE)
     produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
     
+from center.models import Centre
 
 class Transfert(models.Model):
     qte_t = models.IntegerField()
