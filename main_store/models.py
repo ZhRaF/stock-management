@@ -69,4 +69,3 @@ class Transfert(models.Model):
     date_t= models.DateField()
     produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
-

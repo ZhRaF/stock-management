@@ -9,11 +9,11 @@ from django.db import models
 
 class Centre(models.Model):
     Code_c = models.AutoField(primary_key=True)
-    designation_c = models.CharField()
+    designation_c = models.CharField(max_length=50)
 
 class produits_centre(models.Model):
     Code_pc = models.AutoField(primary_key=True)
-    designation_pc = models.CharField()
+    designation_pc = models.CharField(max_length=50)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
 
 
@@ -26,6 +26,7 @@ class Employe(models.Model):
     salaire_jour = models.FloatField(max_length=50)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
 
+from main_store.models import Client
 
 class VenteCentre(models.Model):
     num_vc = models.AutoField(primary_key=True)
