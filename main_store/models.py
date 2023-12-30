@@ -8,7 +8,7 @@ class Fournisseur(models.Model):
     prenom_f = models.CharField(max_length=50)
     adresse_f = models.CharField(max_length=100)
     telephone_f = models.CharField(max_length=50)
-    solde = models.FloatField()
+    solde = models.FloatField(default=0.0)
 
 class Reglement(models.Model):
     num_r = models.AutoField(primary_key=True)
@@ -44,7 +44,7 @@ class Client(models.Model):
     prenom_cl = models.CharField(max_length=50)
     adresse_cl = models.CharField(max_length=100)
     telephone_cl = models.CharField(max_length=50)
-    credit = models.FloatField()
+    credit = models.FloatField(default=0.0)
 
 class Paiement_credit(models.Model):
     num_pc = models.AutoField(primary_key=True)

@@ -1,0 +1,77 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Supprimer fournisseur {%endblock%}
+{%load crispy_forms_tags%}
+{%block content%}
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+
+                <h5 class="mb-0">Le fournisseur suivant va être supprimé : </h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="d-flex align-items-center" style="padding-top: 20px;">
+            <p><strong>Code : </strong>
+            <p>
+
+            <p>{{fournisseur.code_f}}</p>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Nom : </strong></p>
+
+            <p>{{fournisseur.nom_f}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Prénom</strong> : </strong></p>
+
+            <p>{{fournisseur.prenom_f}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Adresse : </strong></p>
+
+            <p>{{fournisseur.adresse_f}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Téléphone : </strong></p>
+
+            <p>{{fournisseur.telephone_f}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Solde : </strong></p>
+
+            <p>{{fournisseur.solde}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <form method="POST">
+                {% csrf_token %}
+
+                <a class="btn btn-secondary" href=" {% url 'fournisseurList' %}"> Annuler</a>
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+            </form>
+
+
+        </div>
+        <div class="col-md-7"></div>
+        {%endblock%}
