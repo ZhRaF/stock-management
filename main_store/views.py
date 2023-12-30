@@ -27,11 +27,9 @@ from reportlab.platypus import Spacer
 
 #affichage dashboard
 def dash(request):
-    return render(request,"dashboard/dashboard.html",)
+    return render(request,"main-store/dashboard/dashboard.html",)
 
-#why not in center app ??????
-def dashcentre(request):
-    return render(request,"dashboard/baseCenter.html",)
+
 
 #########Produit###########
 #liste des produits

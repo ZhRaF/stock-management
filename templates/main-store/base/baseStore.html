@@ -169,9 +169,13 @@
               </button>
               <div class="collapse" id="centre-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                  <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">centre 1</a></li>
-                  <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">centre 2</a></li>
-                  <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">centre 3</a></li>
+                  <li class="ms-4 border-bottom  p-1"><a href="{% url 'dashboardCenter' 1 %}"
+                      class="link-custom ">centre
+                      1</a></li>
+                  <li class="ms-4 border-bottom  p-1"><a href="{% url 'dashboardCenter' 2 %}"
+                      class="link-custom ">centre 2</a></li>
+                  <li class="ms-4 border-bottom  p-1"><a href="{% url 'dashboardCenter' 3 %}"
+                      class="link-custom ">centre 3</a></li>
                 </ul>
               </div>
             </li>

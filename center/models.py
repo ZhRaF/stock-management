@@ -8,7 +8,7 @@ from django.db import models
 # Create your models here.
 
 class Centre(models.Model):
-    Code_c = models.AutoField(primary_key=True)
+    code_c = models.AutoField(primary_key=True)
     designation_c = models.CharField(max_length=50)
 
 class produits_centre(models.Model):
