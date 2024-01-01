@@ -156,7 +156,6 @@ def ajouter_fournisseur(request):
     
     if request.method == "POST":          
         form=FournisseurForm(request.POST)
-                  
         if form.is_valid():
             form.save()
             fournisseur_name=form.cleaned_data.get('nom_f','prenom_f')
