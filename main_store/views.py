@@ -29,11 +29,6 @@ from reportlab.platypus import Spacer
 def dash(request):
     return render(request,"main-store/dashboard/dashboard.html",)
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> beb1fc4b562ff04ee68180aa4d12b6a5598b7bac
 #########Produit###########
 #liste des produits
 def afficher_produits(request):
