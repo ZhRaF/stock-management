@@ -6,10 +6,6 @@ from . import views
 urlpatterns=[
     
     path('dashboard/',views.dash,name='dashboard'),
-<<<<<<< HEAD
-=======
-    
->>>>>>> beb1fc4b562ff04ee68180aa4d12b6a5598b7bac
      path('productList/',views.afficher_produits,name='productList'),
       path('productAdd/',views.ajouter_produits,name='productAdd'),
     path('productEdit/<int:pk>/',views.modifier_produit,name='productEdit'),
