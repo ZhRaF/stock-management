@@ -301,7 +301,6 @@ def supprimer_client(request,pk):
             client.delete()       
             return redirect("clientList")  
     else:          
-        form=ClientForm(instance=client) 
         return render(request,'main-store/clients/clientDelete.html',{"client":client})
 
 #generation fichier PDF 

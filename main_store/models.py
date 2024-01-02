@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 # Create your models here.
 
 class Fournisseur(models.Model):
@@ -38,6 +40,7 @@ class Achat(models.Model):
     stock = models.ForeignKey(Stock ,on_delete = models.CASCADE)
     produit = models.ForeignKey(Produit ,on_delete = models.CASCADE)
 
+
 class Client(models.Model):
     code_cl = models.AutoField(primary_key=True)
     nom_cl = models.CharField(max_length=50)
@@ -45,6 +48,7 @@ class Client(models.Model):
     adresse_cl = models.CharField(max_length=100)
     telephone_cl = models.CharField(max_length=50)
     credit = models.FloatField(default=0.0)
+
 
 class Paiement_credit(models.Model):
     num_pc = models.AutoField(primary_key=True)
@@ -61,7 +65,6 @@ class Vente(models.Model):
     montant_v = models.FloatField()
     client = models.ForeignKey(Client,on_delete=models.CASCADE)
     produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
-    
 from center.models import Centre
 
 class Transfert(models.Model):

@@ -1,0 +1,56 @@
+{% extends 'center/dashboard/dashboardCenter.html' %}
+{% block title %}Supprimer client {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+                <h5 class="mb-0">Le client suivant va être supprimé : </h5>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="d-flex align-items-center" style="padding-top: 20px;">
+            <p><strong>Code : </strong></p>
+            <p>{{ client.code_cl }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Nom : </strong></p>
+            <p>{{ client.nom_cl }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Prénom : </strong></p>
+            <p>{{ client.prenom_cl }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Adresse : </strong></p>
+            <p>{{ client.adresse_cl }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Téléphone : </strong></p>
+            <p>{{ client.telephone_cl }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>credit : </strong></p>
+            <p>{{ client.credit }}</p>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <form method="POST" action="{% url 'clientDelete' pk=client.code_cl centre=centre %}">
+                {% csrf_token %}
+                <a class="btn btn-secondary" href="{% url 'clientList' centre=centre %}"> Annuler</a>
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7"></div>
+</div>
+{% endblock %}

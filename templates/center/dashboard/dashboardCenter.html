@@ -1,2 +1,219 @@
-{%extends 'center/base/baseCenter.html' %}
-{%block title%}Dashboard{%endblock%}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="/static/custom.css">
+  <link rel="stylesheet" href="/static/font-6/css/all.css">
+
+
+  <style>
+    body {
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+
+    html {
+      height: -webkit-fill-available;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      pointer-events: none;
+      fill: currentColor;
+    }
+
+
+
+    .nav-flush .nav-link {
+      border-radius: 0;
+    }
+
+    .btn-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: .25rem .5rem;
+      font-weight: 600;
+      background-color: transparent;
+      border: 0;
+    }
+
+    /* .btn-toggle:hover,
+.btn-toggle:focus {
+  background-color: #d2f4ea;
+} */
+
+    .btn-toggle::before {
+      margin-right: 6px;
+      width: 1em;
+      line-height: 0;
+      content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+      transition: transform .35s ease;
+      transform-origin: .5em 50%;
+    }
+
+    .btn-toggle[aria-expanded="true"]::before {
+      transform: rotate(90deg);
+    }
+
+    .btn-toggle-nav a {
+      display: inline-flex;
+      padding: .1875rem .5rem;
+      margin-top: .125rem;
+      margin-left: 1.25rem;
+      text-decoration: none;
+    }
+
+    /* .btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+  background-color: #d2f4ea;
+} */
+
+    .scrollarea {
+      overflow-y: auto;
+    }
+
+    .fw-semibold {
+      font-weight: 600;
+    }
+
+    .lh-tight {
+      line-height: 1.25;
+    }
+
+    .bg-green {
+      background-color: rgb(133, 194, 133);
+    }
+
+    .link-custom {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .link-custom:hover {
+      color: green;
+      font-weight: bold;
+    }
+
+    .container {
+      padding-left: 0;
+      padding-right: 0;
+      margin-right: 0;
+
+    }
+
+    hr {
+      width: 300px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="main-container d-flex">
+    <div class="sidebar-container">
+      <div class="min-vh-100  p-3  bg-green" style="width: 300px;">
+        <div
+          class="d-flex align-items-center justify-content-center pb-3 mb-3 text-decoration-none border-4 border-bottom custom-border">
+          <span class="fs-3 fw-semibold green">Centre  {{centre}} </span>
+        </div>
+        <ul class="list-unstyled ps-0">
+          <li class="mb-2">
+            <button class="btn  btn-toggle align-items-center link-custom  collapsed" data-bs-toggle="collapse"
+              data-bs-target="#dash-collapse" aria-expanded="true">
+              magazin
+            </button>
+            <div class="collapse show" id="dash-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="ms-4  border-bottom   p-1"><a href="{% url 'dashboard' %}"
+                    class=" link-custom ">Dashboard</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-2">
+            <button class="btn btn-toggle link-custom align-items-center  collapsed" data-bs-toggle="collapse"
+              data-bs-target="#emp-collapse" aria-expanded="false">
+              Employés
+            </button>
+            <div class="collapse" id="emp-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="ms-4 border-bottom  p-1"><a href="{% url 'employeAdd' centre=centre %}" class="link-custom ">Nouveau employe</a></li>
+                <li class="ms-4 border-bottom  p-1"><a href="{% url 'employeList' centre=centre %}" class="link-custom ">Journal</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-2">
+            <button class="btn btn-toggle link-custom align-items-center  collapsed" data-bs-toggle="collapse"
+              data-bs-target="#orders-collapse" aria-expanded="false">
+              Vente
+            </button>
+            <div class="collapse" id="orders-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">Nouvelle vente</a></li>
+                <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">Journal</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-2">
+            <button class="btn btn-toggle link-custom align-items-center  collapsed" data-bs-toggle="collapse"
+              data-bs-target="#clients-collapse" aria-expanded="false">
+              Clients
+            </button>
+            <div class="collapse" id="clients-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="ms-4 border-bottom  p-1"><a href="{% url 'clientAdd' centre=centre %}" class="link-custom ">Nouveau client</a></li>
+                <li class="ms-4 border-bottom  p-1"><a href="{% url 'clientList' centre=centre %}" class="link-custom ">Journal</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="mb-2">
+            <button class="btn btn-toggle link-custom align-items-center  collapsed" data-bs-toggle="collapse"
+              data-bs-target="#produits-collapse" aria-expanded="false">
+              Produits
+            </button>
+            <div class="collapse" id="produits-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">transférés</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {%block content%} {%endblock%}
+    </div>
+  </div>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>
