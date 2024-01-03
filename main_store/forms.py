@@ -3,6 +3,9 @@ from django import forms
 from .models import Produit 
 from .models import Client 
 from .models import Fournisseur
+from .models import Achat
+
+
 class ProduitForm(forms.ModelForm):
     class Meta:
         model=Produit
@@ -19,8 +22,8 @@ class FournisseurForm(forms.ModelForm):
             
             'nom_f' : 'Nom:',
             'prenom_f':'Prenom:',
-            'adresse_f':'Adresse',
-            'telephone_f':'Téléphone',
+            'adresse_f':'Adresse:',
+            'telephone_f':'Téléphone:',
 
         }
 
@@ -32,7 +35,47 @@ class ClientForm(forms.ModelForm):
             
             'nom_cl' : 'Nom:',
             'prenom_cl':'Prenom:',
-            'adresse_cl':'Adresse',
-            'telephone_cl':'Téléphone',
+            'adresse_cl':'Adresse:',
+            'telephone_cl':'Téléphone:',
 
         }
+
+class AchatForm(forms.ModelForm):
+  
+    class Meta:
+        model=Achat
+        
+        fields=['date_a','produit','qte_a','prix_unitaireHT','fournisseur','type_Paiement_A','montant_A']
+        labels = {
+            
+            'date_a':'Date:',
+            'produit':'Produit:',
+            'qte_a':'Quantité',
+            'prix_unitaireHT':'Prix Unitaire:',
+            'fournisseur':'Fournisseur:',
+            'type_Paiement_A':'Paiement:',
+            'montant_A':'Montant versé:',
+
+
+        }
+    
+        widgets = {
+            'date_a': forms.DateInput(attrs={'type': 'date'}),  
+
+
+        }
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        qte_a = cleaned_data.get('qte_a')
+        prix_unitaireHT = cleaned_data.get('prix_unitaireHT')
+        montant_A = cleaned_data.get('montant_A')
+        type_Paiement_A = cleaned_data.get('type_Paiement_A')
+
+        if type_Paiement_A == 'Partiel' and (montant_A is None or montant_A >=qte_a * prix_unitaireHT):
+            raise forms.ValidationError("Le montant versé doit être inférieur au montant total")
+
+        return cleaned_data
+
+    

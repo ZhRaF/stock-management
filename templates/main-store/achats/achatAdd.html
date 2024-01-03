@@ -1,0 +1,118 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Ajouter achats {%endblock%}
+{%load crispy_forms_tags%}
+{%block content%}
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+                <i class="fa-solid fa-plus me-1"></i>
+                <h5 class="mb-0">Ajouter un nouveau achat</h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top: 20px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-5"></div>
+</div>
+<div class="row" style="padding-top: 15px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        {% for message in messages%}
+        {%if message%}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {%endif%}
+        {%endfor%}
+
+
+        <form method="POST">
+            {%csrf_token%}
+            {{form|crispy}}
+            <div class="row">
+                <div class="col-md-5">
+                    <span id="totalLabel" style="font-weight: 700;">Total: </span>
+                    <span id="totalResult" style="font-weight: 700;"></span>
+                </div>
+                <div class="col-md-7 text-end">
+                    <a class="btn btn-secondary me-2" id="grey-btn" href="{% url 'achatList' %}">Annuler</a>
+                    <input class="btn btn-success" id="green-btn" type="submit" value="Valider">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="col-md-7"></div>
+
+    {%endblock%}
+    {%block scripts%}
+    <script>
+        $(document).ready(function () {
+
+            $('#id_produit').select2();
+            $('#id_fournisseur').select2();
+            $('#id_fournisseur').select2()
+                .on('select2:open', () => {
+                    if (!$('.select2-results').find('.create-new-item').length) {
+                        $('.select2-results').append('<a class="select2-results__option create-new-item" href="/achatFournisseur" style="display: block; padding: 6px 20px;">Ajouter Nouveau Fournisseur</a>');
+                    }
+                    $('.create-new-item').on('click', function (e) {
+                        e.preventDefault();
+                        window.location.href = '/achatFournisseur';
+                    });
+                });
+
+
+
+
+            $('#id_type_Paiement_A').change(function () {
+                function calculateMontant() {
+                    var qte_a = parseFloat($('#id_qte_a').val());
+                    var prix_unitaireHT = parseFloat($('#id_prix_unitaireHT').val());
+
+                    if (!isNaN(qte_a) && !isNaN(prix_unitaireHT)) {
+                        $('#id_montant_A').val(qte_a * prix_unitaireHT);
+                    }
+                }
+                $('#id_prix_unitaireHT').on('input', calculateMontant);
+                $('#id_qte_a').on('input', calculateMontant);
+
+                var selectedValue = $(this).val();
+                if (selectedValue === 'Partiel') {
+                    $('#id_montant_A').prop('disabled', false);
+
+                } else {
+                    calculateMontant();
+
+                    $('#id_montant_A ').prop('disabled', true);
+                }
+            });
+            $('#id_qte_a, #id_prix_unitaireHT').on('input', function () {
+                var qte = parseFloat($('#id_qte_a').val()) || 0;
+                var prixunitaire = parseFloat($('#id_prix_unitaireHT').val()) || 0;
+
+                var total = qte * prixunitaire;
+                $('#totalResult').text(total.toFixed(2)); // Display the total result
+
+                // Show the "Total" span section if qte and prixunitaire have valid values
+                if (!isNaN(total) && total !== 0) {
+                    $('#totalSection').show();
+                } else {
+                    $('#totalSection').hide();
+                }
+            });
+
+        });
+
+    </script>
+    {%endblock%}

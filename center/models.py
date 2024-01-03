@@ -43,14 +43,18 @@ class ClientC(models.Model):
     centre = models.ForeignKey(Centre, on_delete=models.CASCADE, null=True)
 
 
-from main_store.models import Client
 
 class VenteCentre(models.Model):
     num_vc = models.AutoField(primary_key=True)
     qte_vc = models.IntegerField()
     date_vc = models.DateField()
+    type_choices=[
+         ('Entier', 'Entier'),
+        ('Partiel', 'Partiel'),
+    ]
+    type_Paiement_vc = models.CharField(max_length=20,choices=type_choices,default='Entier')
     montant_vc = models.FloatField()   
-    client = models.ForeignKey(Client,on_delete=models.CASCADE)
+    client = models.ForeignKey(ClientC,on_delete=models.CASCADE)
     produit = models.ForeignKey(produits_centre,on_delete=models.CASCADE)
 
     

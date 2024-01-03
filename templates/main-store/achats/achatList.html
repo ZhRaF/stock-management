@@ -1,0 +1,93 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Journal achats {%endblock%}
+{%block content%}
+{% load mathfilters %}
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div class="d-flex align-items-center" style="padding-top: 50px;">
+            <i class="fa-solid fa-user me-2 fa-lg" style="margin-top: px;"></i>
+            <h4 class="mb-0">Achats</h4>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- table element -->
+
+<div class="row" style="padding-top: 30px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <!-- card -->
+        <div class="card border-0">
+            <div class="row">
+                <div class="col-md-5">
+                    <a class="btn btn-secondary btn-sm" id="green-btn" href="{% url 'achatAdd'%}">
+                        <i class="fa-solid fa-plus me-1"></i>Nouveaux achats
+                    </a>
+
+                </div>
+                <div class="col-md-5">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+
+                    </form>
+                </div>
+                <div class="col-md-2 d-flex justify-content-end">
+                    <a class="btn btn-secondary btn-sm" href="#"><i class="fa-solid fa-print me-1 ms-1"></i></a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- card end -->
+        <table class="table table-hover bg-white">
+            <thead>
+                <tr>
+
+                    <th>Numéro</th>
+                    <th>Date</th>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Fournisseur</th>
+                    <th>Paiement</th>
+                    <th>Montant versé</th>
+                    <th>Montant total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for achat in achats %}
+                <tr>
+
+                    <td class="col-md-1">{{achat.num_a}}</td>
+                    <td class="col-md-1">{{achat.date_a}}</td>
+                    <td class="col-md-2">{{achat.produit }}</td>
+                    <td class="col-md-2">{{achat.qte_a}}</td>
+                    <td class="col-md-2">{{achat.prix_unitaireHT}}</td>
+                    <td class="col-md-2">{{achat.fournisseur }}</td>
+                    <td class="col-md-1">{{achat.type_Paiement_A }}</td>
+                    <td class="col-md-1">{{achat.montant_A }}</td>
+                    <td class="col-md-1"> {% with total_amount=achat.qte_a|mul:achat.prix_unitaireHT %}
+                        {{ total_amount }}
+                        {% endwith %}
+                    </td>
+                    <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="#">
+                            <i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td class="col-md-1"><a class="btn btn-danger btn-sm" href="#">
+                            <i class="fa-solid fa-trash"></i>
+                        </a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+{%endblock%}

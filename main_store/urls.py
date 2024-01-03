@@ -24,4 +24,12 @@ urlpatterns=[
     path('clientEdit/<int:pk>/',views.modifier_client,name='clientEdit'),
     path('clientDelete/<int:pk>/',views.supprimer_client,name='clientDelete'),
      path('clientPrint',views.imprimer_client,name='clientPrint'),
+
+      path('achatList/',views.afficher_achat,name='achatList'),
+      path('achatAdd/',views.ajouter_achat,name='achatAdd'),
+       path('achatFournisseur/',views.achat_fournisseur,name='achatFournisseur'),
+    
+
+       path('stockList/',views.afficher_stock,name='stockList'),
+      
 ]

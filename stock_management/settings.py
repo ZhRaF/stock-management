@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'center',
     'crispy_forms',
     'crispy_bootstrap5',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

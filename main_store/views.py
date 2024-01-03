@@ -3,9 +3,13 @@ from django.db.models import Q
 from .models import Produit
 from .models import Fournisseur
 from .models import Client
+from .forms import Achat
+from .models import Client
+from .models import Stock
 from .forms import ProduitForm
 from .forms import FournisseurForm
 from .forms import ClientForm
+from .forms import AchatForm
 from django.contrib import messages
 from django.http import FileResponse
 import io
@@ -364,4 +368,86 @@ def imprimer_client(request):
     response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
 
     return response
-     
+
+
+
+#############achats#############
+#liste des achat
+
+def afficher_achat(request):
+    
+    achats=Achat.objects.all()
+    return render(request,"main-store/achats/achatList.html",{"achats":achats})
+
+#ajouter achat
+
+def ajouter_achat(request):
+    
+    if request.method == "POST":          
+        form=AchatForm(request.POST)
+                  
+        if form.is_valid():
+            form.save()
+            cleaned_data = form.cleaned_data
+            produit_name = cleaned_data['produit'].designationP  
+            year_of_achat = cleaned_data['date_a'].year
+            full_name=f"{produit_name}{year_of_achat}"
+            qte_a = cleaned_data['qte_a']
+            prix_unitaireHT = cleaned_data['prix_unitaireHT']
+            montant_A = cleaned_data['montant_A']
+            stock_exists = Stock.objects.filter(designation_s=full_name).exists()
+
+            if stock_exists:
+                
+                stock_product = Stock.objects.get(designation_s=full_name)
+                stock_product.qte_s += qte_a
+                stock_product.save()
+                success_message = f"Le produit {full_name} est déja en stock ."
+                
+            else:
+                stock_product = Stock.objects.create(
+                    designation_s=full_name,
+                    qte_s=qte_a,
+                    prix_achat=prix_unitaireHT
+                )
+                success_message = f"Le produit {full_name} est ajouté en stock ."
+            
+            
+
+            stock_product.save()
+            fournisseur_code= cleaned_data['fournisseur'].code_f
+            fournisseur= Fournisseur.objects.get(code_f=fournisseur_code)
+            fournisseur.solde+=(qte_a*prix_unitaireHT)-montant_A
+            fournisseur.save()
+            achat = form.save(commit=False)
+            achat.save()
+            
+           
+            messages.success(request, success_message)
+            form = AchatForm()
+            return render(request,"main-store/achats/achatAdd.html",{"form":form})
+            
+    else:
+        form = AchatForm()
+    return render(request,"main-store/achats/achatAdd.html",{"form":form,})
+
+#######nouveau fournisseur
+def achat_fournisseur(request):
+    
+    if request.method == "POST":          
+        form=FournisseurForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = FournisseurForm()
+            return redirect('achatAdd')
+    else:
+        form = FournisseurForm()
+        return render(request,"main-store/achats/achatFournisseur.html",{"form":form,})
+    
+#############stock#############
+#liste stock
+
+def afficher_stock(request):
+    
+    stocks=Stock.objects.all()
+    return render(request,"main-store/stock/stockList.html",{"stocks":stocks})
