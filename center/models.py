@@ -47,7 +47,7 @@ class VenteCentre(models.Model):
     qte_vc = models.IntegerField()
     date_vc = models.DateField()
     montant_vc = models.FloatField()   
-    client = models.ForeignKey(Client,on_delete=models.CASCADE)
+    client = models.ForeignKey(ClientC,on_delete=models.CASCADE)
     produit = models.ForeignKey(produits_centre,on_delete=models.CASCADE)
 
     
