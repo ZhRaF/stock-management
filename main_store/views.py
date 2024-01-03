@@ -413,7 +413,7 @@ def ajouter_achat(request):
                 success_message = f"Le produit {full_name} est ajouté en stock ."
             
             
-            cleaned_data['stock']=stock_product
+
             stock_product.save()
 
             fournisseur_code= cleaned_data['fournisseur'].code_f
@@ -421,6 +421,7 @@ def ajouter_achat(request):
             fournisseur.solde+=(qte_a*prix_unitaireHT)-montant_A
             fournisseur.save()
             achat = form.save(commit=False)
+            achat.stock=stock_product
             achat.save()
             
            
@@ -438,13 +439,13 @@ def achat_fournisseur(request):
     if request.method == "POST":          
         form=FournisseurForm(request.POST)
         if form.is_valid():
-            
             form.save()
             form = FournisseurForm()
             return redirect('achatAdd')
     else:
         form = FournisseurForm()
         return render(request,"main-store/achats/achatFournisseur.html",{"form":form,})
+
 ##supprimer achat
 def supprimer_achat(request,pk):
     achat=Achat.objects.get(num_a=pk)   
@@ -462,6 +463,8 @@ def supprimer_achat(request,pk):
             else:
                 stock.qte_s-=qte_a
                 stock.save()
+                if stock.qte_s <= 0:
+                     stock.delete()
 
             achat.delete()       
             return redirect("achatList")  
@@ -475,8 +478,6 @@ def afficher_stock(request):
     
     stocks=Stock.objects.all()
     return render(request,"main-store/stock/stockList.html",{"stocks":stocks})
-#modifier stock
-
 def modifier_stock(request,pk):
     stock=Stock.objects.get(num_s=pk)
     if request.method=='POST':
