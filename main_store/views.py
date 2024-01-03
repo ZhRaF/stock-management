@@ -3,7 +3,7 @@ from django.db.models import Q
 from .models import Produit
 from .models import Fournisseur
 from .models import Client
-from .forms import Achat, StockForm
+from .forms import Achat, AchatEditForm, StockForm
 from .models import Client
 from .models import Stock
 from .forms import ProduitForm
@@ -445,6 +445,36 @@ def achat_fournisseur(request):
     else:
         form = FournisseurForm()
         return render(request,"main-store/achats/achatFournisseur.html",{"form":form,})
+##modifier achat
+    
+def modifier_achat(request,pk):
+    achat=Achat.objects.get(num_a=pk)
+    
+    
+    initial_montant=achat.montant_A
+    if request.method=='POST':
+        form=AchatEditForm(request.POST,instance=achat)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+           
+            
+            
+            fournisseur=achat.fournisseur
+           
+
+            montant = cleaned_data['montant_A']   
+           
+            difference = montant - initial_montant
+            if difference != 0:
+                fournisseur.solde -= difference
+                fournisseur.save()
+
+                
+            form.save()
+            return redirect("achatList")
+    else:
+        form=AchatEditForm(instance=achat)
+        return render(request,'main-store/achats/achatEdit.html',{"form":form})
 
 ##supprimer achat
 def supprimer_achat(request,pk):

@@ -36,11 +36,37 @@
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " id="grey-btn" href="{%url 'stockList' %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'achatList' %}">
                 Annuler </a></td>
             <input class="btn btn-success btn-block" id="green-btn" type="submit" value="valider">
         </form>
     </div>
     <div class="col-md-7"></div>
 
+    {%endblock%}
+    {%block scripts%}
+    <script>
+        $('#id_type_Paiement_A').change(function () {
+            function calculateMontant() {
+                var qte_a = parseFloat($('#id_qte_a').val());
+                var prix_unitaireHT = parseFloat($('#id_prix_unitaireHT').val());
+
+                if (!isNaN(qte_a) && !isNaN(prix_unitaireHT)) {
+                    $('#id_montant_A').val(qte_a * prix_unitaireHT);
+                }
+            }
+            $('#id_prix_unitaireHT').on('input', calculateMontant);
+            $('#id_qte_a').on('input', calculateMontant);
+
+            var selectedValue = $(this).val();
+            if (selectedValue === 'Partiel') {
+                $('#id_montant_A').prop('readonly', false);
+
+            } else {
+                calculateMontant();
+
+                $('#id_montant_A ').prop('readonly', true);
+            }
+        });
+    </script>
     {%endblock%}

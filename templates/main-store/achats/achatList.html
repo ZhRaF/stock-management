@@ -75,7 +75,7 @@
                         {{ total_amount }}
                         {% endwith %}
                     </td>
-                    <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="#">
+                    <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="{% url 'achatEdit' achat.num_a %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td class="col-md-1"><a class="btn btn-danger btn-sm" href="{% url 'achatDelete' achat.num_a %}">
                             <i class="fa-solid fa-trash"></i>

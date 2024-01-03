@@ -89,7 +89,22 @@ class AchatForm(forms.ModelForm):
 
         return montant_A
 
+class AchatEditForm(forms.ModelForm):
+  
+    class Meta:
+        model=Achat
+        
+        fields=['type_Paiement_A','montant_A']
+        labels = {
+            
+            
+            
+            'type_Paiement_A':'Paiement:',
+            'montant_A':'Montant versé:',
 
+
+        }
+    
 class StockForm(forms.ModelForm):
     class Meta:
         model=Stock
