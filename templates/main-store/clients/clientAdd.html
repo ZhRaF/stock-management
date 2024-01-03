@@ -28,16 +28,16 @@
     </div>
     <div class="col-md-5"></div>
 </div>
-<div class="row" style="padding-top: 30px;">
+<div class="row" style="padding-top: 15px;">
 
     <div class="col-md-1"></div>
     <div class="col-md-4">
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " href="{%url 'clientList' %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'clientList' %}">
                 Annuler </a></td>
-            <input class="btn btn-success btn-block" type="submit" value="valider">
+            <input class="btn btn-success btn-block" id="green-btn" type="submit" value="valider">
 
         </form>
     </div>

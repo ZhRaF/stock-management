@@ -14,6 +14,9 @@ class Centre(models.Model):
             self.code_c = max_code_c + 1
 
         super().save(*args, **kwargs)
+    def __str__(self):
+        return self.designation_c
+
 
 class produits_centre(models.Model):
     Code_pc = models.AutoField(primary_key=True)

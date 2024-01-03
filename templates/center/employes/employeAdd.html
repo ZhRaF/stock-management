@@ -1,4 +1,4 @@
-{%extends 'center/dashboard/dashboardCenter.html' %}
+{%extends 'center/base/baseCenter.html' %}
 {%block title%}ajouter employe {%endblock%}
 {%load crispy_forms_tags%}
 {%block content%}
@@ -9,7 +9,7 @@
             <div class="d-flex align-items-center" style="padding-top: 50px;">
 
                 <i class="fa-solid fa-plus me-1"></i>
-                <h5 class="mb-0">Ajouter un nouveau employe</h5>
+                <h5 class="mb-0">Ajouter un nouveau employé</h5>
 
             </div>
             <hr>
@@ -28,20 +28,20 @@
     </div>
     <div class="col-md-5"></div>
 </div>
-<div class="row" style="padding-top: 30px;">
+<div class="row" style="padding-top: 15px;">
 
     <div class="col-md-1"></div>
     <div class="col-md-4">
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " href="{%url 'employeList' centre=centre %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'employeList' centre=centre %}">
                 Annuler </a></td>
-            <input class="btn btn-success btn-block" type="submit" value="valider">
+            <input class="btn btn-success btn-block" type="submit" id="green-btn" value="valider">
 
         </form>
     </div>
-    
+
     <div class="col-md-7"></div>
 
     {%endblock%}

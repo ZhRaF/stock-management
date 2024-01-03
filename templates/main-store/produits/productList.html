@@ -24,7 +24,7 @@
         <div class="card border-0">
             <div class="row">
                 <div class="col-md-5">
-                    <a class="btn btn-secondary btn-sm" href="{% url 'productAdd'%}">
+                    <a class="btn btn-secondary " id="green-btn" href="{% url 'productAdd'%}">
                         <i class="fa-solid fa-plus me-1"></i>Nouveaux produits
                     </a>
 
@@ -47,10 +47,10 @@
         </div>
 
         <!-- card end -->
-        <table class="table table-hover bg-white">
+        <table class="table table-hover bg-white" style="margin-top: 15px;">
             <thead>
                 <tr>
-
+                    <th>Code</th>
                     <th>Désignation</th>
                     <th> Modifier</th>
                     <th> Supprimer</th>
@@ -59,8 +59,8 @@
             <tbody>
                 {% for product in products %}
                 <tr>
-
-                    <td class="col-md-6">{{product.designationP}}</td>
+                    <td class="col-md-2">{{product.code_P}}</td>
+                    <td class="col-md-7">{{product.designationP}}</td>
 
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm"
                             href="{%url 'productEdit' product.code_P %}">

@@ -1,4 +1,4 @@
-{%extends 'center/dashboard/dashboardCenter.html' %}
+{%extends 'center/base/baseCenter.html' %}
 {%block title%}Liste employes {%endblock%}
 {%block content%}
 
@@ -6,7 +6,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-11">
         <div class="d-flex align-items-center" style="padding-top: 50px;">
-            <i class="fa-solid fa-truck-field me-2" style="margin-top: 6px;"></i>
+            <i class="fa-solid fa-briefcase me-2 fa-lg" style="margin-top: 6px;"></i>
 
             <h4 class="mb-0">Employes</h4>
 
@@ -24,8 +24,8 @@
         <div class="card border-0">
             <div class="row">
                 <div class="col-md-5">
-                    <a class="btn btn-secondary btn-sm" href="{% url 'employeAdd' centre=centre %}">
-                        <i class="fa-solid fa-plus me-1"></i>Nouveaux employes
+                    <a class="btn btn-secondary btn-sm" id="green-btn" href="{% url 'employeAdd' centre=centre %}">
+                        <i class="fa-solid fa-plus me-1"></i>Nouveaux employés
                     </a>
 
                 </div>
@@ -56,7 +56,7 @@
                     <th>Prénom</th>
                     <th>Adresse</th>
                     <th>Téléphone</th>
-                
+
                 </tr>
             </thead>
             <tbody>
@@ -68,12 +68,13 @@
                     <td class="col-md-2">{{employe.prenom_e }}</td>
                     <td class="col-md-2">{{employe.adresse_e }}</td>
                     <td class="col-md-2">{{employe.telephone_e}}</td>
-                  
+
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm"
                             href="{%url 'employeEdit' pk=employe.code_e centre=centre %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td class="col-md-1"><a class="btn btn-danger btn-sm"
-                            href="{%url 'employeDelete' pk=employe.code_e  centre=centre %}"> <i class="fa-solid fa-trash"></i>
+                            href="{%url 'employeDelete' pk=employe.code_e  centre=centre %}"> <i
+                                class="fa-solid fa-trash"></i>
                         </a></td>
                 </tr>
                 {% endfor %}

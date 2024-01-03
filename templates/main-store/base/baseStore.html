@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{%block title%} {%endblock%}</title>
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="/static/custom.css">
+  <link rel="stylesheet" href="/static/customStore.css">
   <link rel="stylesheet" href="/static/font-6/css/all.css">
 
 
@@ -58,6 +58,18 @@
               <div class="collapse" id="orders-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                   <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">Nouveau transfert</a></li>
+                  <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">Journal</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="mb-2">
+              <button class="btn btn-toggle link-custom align-items-center  collapsed" data-bs-toggle="collapse"
+                data-bs-target="#stock-collapse" aria-expanded="false">
+                Stock
+              </button>
+              <div class="collapse" id="stock-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
                   <li class="ms-4 border-bottom  p-1"><a href="#" class="link-custom ">Journal</a></li>
                 </ul>
               </div>
@@ -124,38 +136,23 @@
                 </ul>
               </div>
             </li>
-            <li class="mb-2">
-              <button class="btn link-custom align-items-center  ">
-                Stock
-              </button>
 
-            </li>
           </ul>
         </div>
       </div>
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
+
+          <div class="collapse navbar-collapse" id="navbarNav" style=" margin-left: 850px;">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/admin">Admin</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-              </li>
+
             </ul>
           </div>
+
+
         </nav>
         {%block content%} {%endblock%}
       </div>

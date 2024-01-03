@@ -1,4 +1,4 @@
-{%extends 'center/dashboard/dashboardCenter.html' %}
+{%extends 'center/base/baseCenter.html' %}
 {%block title%}Liste clients {%endblock%}
 {%block content%}
 
@@ -6,7 +6,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-11">
         <div class="d-flex align-items-center" style="padding-top: 50px;">
-            <i class="fa-solid fa-truck-field me-2" style="margin-top: 6px;"></i>
+            <i class="fa-solid fa-user me-2 fa-lg" style="margin-top: px;"></i>
 
             <h4 class="mb-0">clients</h4>
 
@@ -24,7 +24,7 @@
         <div class="card border-0">
             <div class="row">
                 <div class="col-md-5">
-                    <a class="btn btn-secondary btn-sm" href="{% url 'clientAdd' centre=centre %}">
+                    <a class="btn btn-secondary btn-sm" id="green-btn" href="{% url 'clientAdd' centre=centre %}">
                         <i class="fa-solid fa-plus me-1"></i>Nouveaux clients
                     </a>
 
@@ -58,7 +58,7 @@
                     <th>Téléphone</th>
                     <th>credit</th>
 
-                
+
                 </tr>
             </thead>
             <tbody>
@@ -72,12 +72,13 @@
                     <td class="col-md-2">{{client.telephone_cl}}</td>
                     <td class="col-md-2">{{client.credit}}</td>
 
-                  
+
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm"
                             href="{%url 'clientEdit' pk=client.code_cl centre=centre %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td class="col-md-1"><a class="btn btn-danger btn-sm"
-                            href="{%url 'clientDelete' pk=client.code_cl  centre=centre %}"> <i class="fa-solid fa-trash"></i>
+                            href="{%url 'clientDelete' pk=client.code_cl  centre=centre %}"> <i
+                                class="fa-solid fa-trash"></i>
                         </a></td>
                 </tr>
                 {% endfor %}

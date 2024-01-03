@@ -106,3 +106,30 @@ background-color: #d2f4ea;
 hr {
     width: 300px;
 }
+
+#green-btn {
+    background-color: #94c985 !important;
+    border-color: #94c985 !important;
+
+
+}
+
+#green-btn:hover {
+    background-color: #80a775 !important;
+    border-color: #80a775 !important;
+
+}
+
+#grey-btn {
+    border-color: #9a9ea3 !important;
+    color: #9a9ea3 !important;
+    background-color: #ffffff;
+
+}
+
+#grey-btn:hover {
+    background-color: #9a9ea3 !important;
+    border-color: #9a9ea3 !important;
+    color: #ffffff !important;
+
+}
