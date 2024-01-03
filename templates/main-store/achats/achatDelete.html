@@ -1,0 +1,102 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Supprimer produit {%endblock%}
+{%load crispy_forms_tags%}
+{% load mathfilters %}
+{%block content%}
+
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+
+                <h5 class="mb-0">L'achat suivant va être supprimé : </h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="d-flex align-items-center" style="padding-top: 20px;">
+            <p><strong>Numéro: </strong>
+            <p>
+
+            <p>{{achat.num_a}}</p>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Date : </strong></p>
+
+            <p>{{achat.date_a}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Produit: </strong></p>
+
+            <p>{{achat.produit}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Quantité: </strong></p>
+
+            <p>{{achat.qte_a}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Prix unitaire: </strong></p>
+
+            <p>{{achat.prix_unitaireHT}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Fournisseur: </strong></p>
+
+            <p>{{achat.fournisseur}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Paiement: </strong></p>
+
+            <p>{{achat.type_Paiement_A}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Montant versé: </strong></p>
+
+            <p>{{achat.montant_A}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Montant total: </strong></p>
+
+            <p>{% with total_amount=achat.qte_a|mul:achat.prix_unitaireHT %}
+                {{ total_amount }}
+                {% endwith %}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <form method="POST">
+                {% csrf_token %}
+
+                <a class="btn btn-secondary" href=" {% url 'achatList' %}"> Annuler</a>
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+            </form>
+
+
+        </div>
+        <div class="col-md-7"></div>
+        {%endblock%}

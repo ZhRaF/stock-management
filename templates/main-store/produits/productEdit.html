@@ -36,9 +36,9 @@
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " href="{%url 'productList' %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'productList' %}">
                 Annuler </a></td>
-            <input class="btn btn-success btn-block" type="submit" value="valider">
+            <input class="btn btn-success btn-block" id="green-btn" type="submit" value="valider">
         </form>
     </div>
     <div class="col-md-7"></div>

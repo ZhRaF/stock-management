@@ -28,8 +28,11 @@ urlpatterns=[
       path('achatList/',views.afficher_achat,name='achatList'),
       path('achatAdd/',views.ajouter_achat,name='achatAdd'),
        path('achatFournisseur/',views.achat_fournisseur,name='achatFournisseur'),
+         path('achatDelete/<int:pk>/',views.supprimer_achat,name='achatDelete'),
     
 
        path('stockList/',views.afficher_stock,name='stockList'),
+       path('stockEdit/<int:pk>/',views.modifier_stock,name='stockEdit'),
+       path('stockDelete/<int:pk>/',views.supprimer_stock,name='stockDelete'),
       
 ]

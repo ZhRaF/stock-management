@@ -89,12 +89,12 @@
 
                 var selectedValue = $(this).val();
                 if (selectedValue === 'Partiel') {
-                    $('#id_montant_A').prop('disabled', false);
+                    $('#id_montant_A').prop('readonly', false);
 
                 } else {
                     calculateMontant();
 
-                    $('#id_montant_A ').prop('disabled', true);
+                    $('#id_montant_A ').prop('readonly', true);
                 }
             });
             $('#id_qte_a, #id_prix_unitaireHT').on('input', function () {

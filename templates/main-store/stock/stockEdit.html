@@ -1,5 +1,5 @@
-{%extends 'center/base/baseCenter.html' %}
-{%block title%}Modifer employe {%endblock%}
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Modifer produit {%endblock%}
 {%load crispy_forms_tags%}
 {%block content%}
 
@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center" style="padding-top: 50px;">
 
                 <i class="fa-regular fa-pen-to-square me-1"></i>
-                <h5 class="mb-0">Modifier l'employe</h5>
+                <h5 class="mb-0">Modifier le produits</h5>
 
             </div>
             <hr>
@@ -36,7 +36,7 @@
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " id="grey-btn" href="{%url 'employeList' centre %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'stockList' %}">
                 Annuler </a></td>
             <input class="btn btn-success btn-block" id="green-btn" type="submit" value="valider">
         </form>

@@ -1,6 +1,6 @@
 from django.db.models import fields
 from django import forms
-from .models import Produit 
+from .models import Produit, Stock 
 from .models import Client 
 from .models import Fournisseur
 from .models import Achat
@@ -77,5 +77,27 @@ class AchatForm(forms.ModelForm):
             raise forms.ValidationError("Le montant versé doit être inférieur au montant total")
 
         return cleaned_data
+    def clean_montant_A(self):
+        montant_A = self.cleaned_data.get('montant_A')
+        qte_a = self.cleaned_data.get('qte_a')
+        prix_unitaireHT = self.cleaned_data.get('prix_unitaireHT')
+        type_Paiement_A = self.cleaned_data.get('type_Paiement_A')
 
-    
+        if montant_A is None or montant_A == '':
+            if type_Paiement_A == 'Entier':
+                montant_A = qte_a * prix_unitaireHT
+
+        return montant_A
+
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model=Stock
+        fields=['prix_achat','qte_s']
+        labels = {
+            
+            'prix_achat' : 'Prix d achat:',
+            'qte_s':'Quantité:',
+            
+
+        }

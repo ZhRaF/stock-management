@@ -6,7 +6,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-11">
         <div class="d-flex align-items-center" style="padding-top: 50px;">
-            <i class="fa-solid fa-user me-2 fa-lg" style="margin-top: px;"></i>
+            <i class="fa-solid fa-cart-shopping me-2 fa-lg"></i>
             <h4 class="mb-0">Achats</h4>
 
 
@@ -77,7 +77,7 @@
                     </td>
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="#">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td class="col-md-1"><a class="btn btn-danger btn-sm" href="#">
+                    <td class="col-md-1"><a class="btn btn-danger btn-sm" href="{% url 'achatDelete' achat.num_a %}">
                             <i class="fa-solid fa-trash"></i>
                         </a></td>
                 </tr>

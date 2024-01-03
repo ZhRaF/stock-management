@@ -3,7 +3,7 @@ from django.db.models import Q
 from .models import Produit
 from .models import Fournisseur
 from .models import Client
-from .forms import Achat
+from .forms import Achat, StockForm
 from .models import Client
 from .models import Stock
 from .forms import ProduitForm
@@ -413,8 +413,9 @@ def ajouter_achat(request):
                 success_message = f"Le produit {full_name} est ajouté en stock ."
             
             
-
+            cleaned_data['stock']=stock_product
             stock_product.save()
+
             fournisseur_code= cleaned_data['fournisseur'].code_f
             fournisseur= Fournisseur.objects.get(code_f=fournisseur_code)
             fournisseur.solde+=(qte_a*prix_unitaireHT)-montant_A
@@ -437,12 +438,35 @@ def achat_fournisseur(request):
     if request.method == "POST":          
         form=FournisseurForm(request.POST)
         if form.is_valid():
+            
             form.save()
             form = FournisseurForm()
             return redirect('achatAdd')
     else:
         form = FournisseurForm()
         return render(request,"main-store/achats/achatFournisseur.html",{"form":form,})
+##supprimer achat
+def supprimer_achat(request,pk):
+    achat=Achat.objects.get(num_a=pk)   
+    if request.method=='POST':     
+            fournisseur = achat.fournisseur
+            qte_a = achat.qte_a
+            prix_unitaireHT = achat.prix_unitaireHT
+            montant_A = achat.montant_A
+            if achat.type_Paiement_A=='Partiel':
+                fournisseur.solde-=(qte_a*prix_unitaireHT)-montant_A
+                fournisseur.save()
+            stock=achat.stock
+            if stock.qte_s <= 0 :
+                stock.delete()
+            else:
+                stock.qte_s-=qte_a
+                stock.save()
+
+            achat.delete()       
+            return redirect("achatList")  
+    else:          
+        return render(request,'main-store/achats/achatDelete.html',{"achat":achat})
     
 #############stock#############
 #liste stock
@@ -451,3 +475,23 @@ def afficher_stock(request):
     
     stocks=Stock.objects.all()
     return render(request,"main-store/stock/stockList.html",{"stocks":stocks})
+#modifier stock
+
+def modifier_stock(request,pk):
+    stock=Stock.objects.get(num_s=pk)
+    if request.method=='POST':
+        form=StockForm(request.POST,instance=stock)
+        if form.is_valid():
+            form.save()
+            return redirect("stockList")
+    else:
+        form=StockForm(instance=stock)
+        return render(request,'main-store/stock/stockEdit.html',{"form":form})
+#suprimer stock
+def supprimer_stock(request,pk):
+    stock=Stock.objects.get(num_s=pk)   
+    if request.method=='POST':           
+            stock.delete()       
+            return redirect("stockList")  
+    else:          
+        return render(request,'main-store/stock/stockDelete.html',{"stock":stock})
