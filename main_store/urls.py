@@ -37,5 +37,11 @@ urlpatterns=[
     path('stockDelete/<int:pk>/',views.supprimer_stock,name='stockDelete'),
     path('stockPrint',views.imprimer_stock,name='stockPrint'),
 
+    path('venteList/',views.afficher_vente,name='venteList'),
+    path('venteAdd/',views.ajouter_vente,name='venteAdd'),
+    path('ventePrint',views.imprimer_vente,name='ventePrint'),
+    path('venteDelete/<int:pk>/',views.supprimer_vente,name='venteDelete'),
+    path('venteEdit/<int:pk>/',views.modifier_vente,name='venteEdit'),
+
       
 ]

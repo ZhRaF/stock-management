@@ -1,5 +1,5 @@
 {%extends 'main-store/base/baseStore.html' %}
-{%block title%}Modifer achat {%endblock%}
+{%block title%}Modifer vente{%endblock%}
 {%load crispy_forms_tags%}
 {%block content%}
 
@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center" style="padding-top: 50px;">
 
                 <i class="fa-regular fa-pen-to-square me-1"></i>
-                <h5 class="mb-0">Modifier l' achat</h5>
+                <h5 class="mb-0">Modifier la vente</h5>
 
             </div>
             <hr>
@@ -36,7 +36,7 @@
         <form method="POST">
             {%csrf_token%}
             {{form|crispy}}
-            <a class="btn btn-secondary " id="grey-btn" href="{%url 'achatList' %}">
+            <a class="btn btn-secondary " id="grey-btn" href="{%url 'venteList' %}">
                 Annuler </a></td>
             <input class="btn btn-success btn-block" id="green-btn" type="submit" value="valider">
         </form>
@@ -46,26 +46,26 @@
     {%endblock%}
     {%block scripts%}
     <script>
-        $('#id_type_Paiement_A').change(function () {
+        $('#id_type_Paiement_v').change(function () {
             function calculateMontant() {
-                var qte_a = parseFloat($('#id_qte_a').val());
-                var prix_unitaireHT = parseFloat($('#id_prix_unitaireHT').val());
+                var qte_v = parseFloat($('#id_qte_v').val());
+                var prix_unitaireVT = parseFloat($('#id_prix_unitaireVT').val());
 
-                if (!isNaN(qte_a) && !isNaN(prix_unitaireHT)) {
-                    $('#id_montant_A').val(qte_a * prix_unitaireHT);
+                if (!isNaN(qte_v) && !isNaN(prix_unitaireVT)) {
+                    $('#id_montant_v').val(qte_v * prix_unitaireVT);
                 }
             }
-            $('#id_prix_unitaireHT').on('input', calculateMontant);
-            $('#id_qte_a').on('input', calculateMontant);
+            $('#id_prix_unitaireVT').on('input', calculateMontant);
+            $('#id_qte_v').on('input', calculateMontant);
 
             var selectedValue = $(this).val();
             if (selectedValue === 'Partiel') {
-                $('#id_montant_A').prop('readonly', false);
+                $('#id_montant_v').prop('readonly', false);
 
             } else {
                 calculateMontant();
 
-                $('#id_montant_A ').prop('readonly', true);
+                $('#id_montant_v ').prop('readonly', true);
             }
         });
     </script>

@@ -91,10 +91,10 @@
 
 
                     <th>Produit</th>
-                    <th>Quantité</th>
+                    <th>Prix d'achat</th>
                     <th>Fournisseurs</th>
                     <th>Dates d'achat</th>
-                    <th>Prix d'achat</th>
+                    <th>Quantité</th>
                     <th>Modifier</th>
                     <th>Supprimer</th>
 
@@ -105,7 +105,7 @@
                 <tr>
 
                     <td class="col-md-1">{{stock.designation_s}}</td>
-                    <td class="col-md-2">{{stock.qte_s}}</td>
+                    <td class="col-md-2">{{stock.prix_achat}}</td>
 
                     <td class="col-md-3">
                         <table>
@@ -132,7 +132,7 @@
                     </td>
 
 
-                    <td class="col-md-1">{{stock.prix_achat}}</td>
+                    <td class="col-md-1">{{stock.qte_s}}</td>
 
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="{%url 'stockEdit' stock.num_s %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>

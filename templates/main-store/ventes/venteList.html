@@ -1,5 +1,5 @@
 {%extends 'main-store/base/baseStore.html' %}
-{%block title%}Journal achats {%endblock%}
+{%block title%}Journal ventes {%endblock%}
 {%block content%}
 {%load crispy_forms_tags%}
 {% load mathfilters %}
@@ -8,7 +8,7 @@
     <div class="col-md-11">
         <div class="d-flex align-items-center" style="padding-top: 50px;">
             <i class="fa-solid fa-cart-shopping me-2 fa-lg"></i>
-            <h4 class="mb-0">Achats</h4>
+            <h4 class="mb-0">Ventes</h4>
 
 
         </div>
@@ -24,8 +24,8 @@
         <div class="card border-0">
             <div class="row">
                 <div class="col-md-3">
-                    <a class="btn btn-secondary btn-sm" id="green-btn" href="{% url 'achatAdd'%}">
-                        <i class="fa-solid fa-plus me-1"></i>Nouveaux achats
+                    <a class="btn btn-secondary btn-sm" id="green-btn" href="{%url 'venteAdd'%}">
+                        <i class="fa-solid fa-plus me-1"></i>Nouvelles ventes
                     </a>
 
                 </div>
@@ -33,16 +33,16 @@
 
                 </div>
                 <div class="col-md-1 d-flex justify-content-end">
-                    <a class="btn btn-secondary btn-sm" href="{%url 'achatPrint' %}"><i
+                    <a class="btn btn-secondary btn-sm" href="{%url 'ventePrint' %}"><i
                             class="fa-solid fa-print me-1 ms-1"></i></a>
 
                 </div>
             </div>
             <button class="btn  btn-toggle align-items-center link-custom  collapsed" id="filter-toggle"
-                data-bs-toggle="collapse" data-bs-target="#achat-collapse" aria-expanded="true">
+                data-bs-toggle="collapse" data-bs-target="#vente-collapse" aria-expanded="true">
                 Filtres
             </button>
-            <div class="collapse " id="achat-collapse">
+            <div class="collapse " id="vente-collapse">
                 <div class="row" style="padding-top: 20px;">
 
                     <form method="get" style="display: inline;">
@@ -61,8 +61,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="id_type_Paiement_A">paiement:</label>
-                                    {{ myFilter.form.type_Paiement_A }}
+                                    <label for="id_type_Paiement_A">Paiement:</label>
+                                    {{ myFilter.form.type_Paiement_v }}
                                 </div>
                             </div>
                         </div>
@@ -75,8 +75,8 @@
                             </div>
                             <div class="col-md-7">
                                 <div class="form-group">
-                                    <label for="id_fournisseur_name">Fournisseur:</label>
-                                    {{ myFilter.form.fournisseur_name }}
+                                    <label for="id_fclient_name">Client:</label>
+                                    {{ myFilter.form.client_name }}
                                 </div>
                             </div>
 
@@ -104,31 +104,31 @@
                     <th>Produit</th>
                     <th>Quantité</th>
                     <th>Prix unitaire</th>
-                    <th>Fournisseur</th>
+                    <th>Client</th>
                     <th>Paiement</th>
                     <th>Montant versé</th>
                     <th>Montant total</th>
                 </tr>
             </thead>
             <tbody>
-                {% for achat in achats %}
+                {% for vente in ventes %}
                 <tr>
 
-                    <td class="col-md-1">{{achat.num_a}}</td>
-                    <td class="col-md-1">{{achat.date_a}}</td>
-                    <td class="col-md-2">{{achat.produit }}</td>
-                    <td class="col-md-2">{{achat.qte_a}}</td>
-                    <td class="col-md-2">{{achat.prix_unitaireHT}}</td>
-                    <td class="col-md-2">{{achat.fournisseur }}</td>
-                    <td class="col-md-1">{{achat.type_Paiement_A }}</td>
-                    <td class="col-md-1">{{achat.montant_A }}</td>
-                    <td class="col-md-1"> {% with total_amount=achat.qte_a|mul:achat.prix_unitaireHT %}
+                    <td class="col-md-1">{{vente.num_v}}</td>
+                    <td class="col-md-1">{{vente.date_v}}</td>
+                    <td class="col-md-2">{{vente.stock }}</td>
+                    <td class="col-md-2">{{vente.qte_v}}</td>
+                    <td class="col-md-2">{{vente.prix_unitaireVT}}</td>
+                    <td class="col-md-2">{{vente.client }}</td>
+                    <td class="col-md-1">{{vente.type_Paiement_v }}</td>
+                    <td class="col-md-1">{{vente.montant_v }}</td>
+                    <td class="col-md-1"> {% with total_amount=vente.qte_v|mul:vente.prix_unitaireVT %}
                         {{ total_amount }}
                         {% endwith %}
                     </td>
-                    <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="{% url 'achatEdit' achat.num_a %}">
+                    <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="{%url 'venteEdit' vente.num_v %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td class="col-md-1"><a class="btn btn-danger btn-sm" href="{% url 'achatDelete' achat.num_a %}">
+                    <td class="col-md-1"><a class="btn btn-danger btn-sm" href="{%url 'venteDelete' vente.num_v %}">
                             <i class="fa-solid fa-trash"></i>
                         </a></td>
                 </tr>

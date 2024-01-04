@@ -1,5 +1,5 @@
 {%extends 'main-store/base/baseStore.html' %}
-{%block title%}Supprimer achat {%endblock%}
+{%block title%}Supprimer vente {%endblock%}
 {%load crispy_forms_tags%}
 {% load mathfilters %}
 {%block content%}
@@ -11,7 +11,7 @@
             <div class="d-flex align-items-center" style="padding-top: 50px;">
 
 
-                <h5 class="mb-0">L'achat suivant va être supprimé : </h5>
+                <h5 class="mb-0">La vente suivant va être supprimée : </h5>
 
             </div>
             <hr>
@@ -27,62 +27,62 @@
             <p><strong>Numéro: </strong>
             <p>
 
-            <p>{{achat.num_a}}</p>
+            <p>{{vente.num_v}}</p>
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Date : </strong></p>
 
-            <p>{{achat.date_a}}</p>
+            <p>{{vente.date_v}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Produit: </strong></p>
 
-            <p>{{achat.produit}}</p>
+            <p>{{vente.stock}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Quantité: </strong></p>
 
-            <p>{{achat.qte_a}}</p>
+            <p>{{vente.qte_v}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Prix unitaire: </strong></p>
 
-            <p>{{achat.prix_unitaireHT}}</p>
+            <p>{{vente.prix_unitaireVT}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
-            <p><strong>Fournisseur: </strong></p>
+            <p><strong>Client: </strong></p>
 
-            <p>{{achat.fournisseur}}</p>
+            <p>{{vente.client}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Paiement: </strong></p>
 
-            <p>{{achat.type_Paiement_A}}</p>
+            <p>{{vente.type_Paiement_v}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Montant versé: </strong></p>
 
-            <p>{{achat.montant_A}}</p>
+            <p>{{vente.montant_v}}</p>
 
 
         </div>
         <div class="d-flex align-items-center">
             <p><strong>Montant total: </strong></p>
 
-            <p>{% with total_amount=achat.qte_a|mul:achat.prix_unitaireHT %}
+            <p>{% with total_amount=vente.qte_v|mul:vente.prix_unitaireVT %}
                 {{ total_amount }}
                 {% endwith %}</p>
 
@@ -92,7 +92,7 @@
             <form method="POST">
                 {% csrf_token %}
 
-                <a class="btn btn-secondary" href=" {% url 'achatList' %}"> Annuler</a>
+                <a class="btn btn-secondary" href=" {% url 'venteList' %}"> Annuler</a>
                 <input class="btn btn-danger" type="submit" value="Supprimer">
             </form>
 

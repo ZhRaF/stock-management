@@ -1,16 +1,16 @@
 from django.shortcuts import render,redirect
 from django.db.models import Q
-from .models import Produit
+from .models import Produit, Vente
 from .models import Fournisseur
 from .models import Client
-from .forms import Achat, AchatEditForm, StockForm
+from .forms import Achat, AchatEditForm, StockForm, VenteEditForm, VenteForm
 from .models import Client
 from .models import Stock
 from .forms import ProduitForm
 from .forms import FournisseurForm
 from .forms import ClientForm
 from .forms import AchatForm
-from .filters import AchatFilter, stockFilter
+from .filters import AchatFilter, VenteFilter, stockFilter
 from django.contrib import messages
 from django.http import FileResponse
 import io
@@ -659,6 +659,189 @@ def imprimer_stock(request):
     elements.append(Spacer(1, 20))  
 
     col_widths = [100,50,100,150,60]
+    table_style = [
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),  # Left padding for cells
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),  # Right padding for cells
+        ('BOX', (0, 0), (-1, -1), 0.5, colors.black),  # Add box/borders around the table
+    ]
+
+    table = Table(lignes, style=table_style, colWidths=col_widths)
+    elements.append(table)
+    pdf.build(elements)
+
+    # Prepare the response
+    pdf_buffer.seek(0)
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+
+    return response  
+
+#########ventes######
+##afficher vente
+def afficher_vente(request):
+    
+    ventes = Vente.objects.all()
+    myFilter = VenteFilter(request.GET, queryset=ventes)
+
+    
+    ventes = myFilter.qs
+
+    ventes = ventes.annotate(
+        montant_total=ExpressionWrapper(F('qte_v') * F('prix_unitaireVT'), output_field=DecimalField())
+    )
+    total_montant_total = ventes.aggregate(total=Sum('montant_total'))['total']
+
+    context={"ventes":ventes,'myFilter':myFilter,'total_montant_total': total_montant_total, }
+    return render(request,"main-store/ventes/venteList.html",context)
+
+#ajouter vente
+
+def ajouter_vente(request):
+    
+    if request.method == "POST":          
+        form=VenteForm(request.POST)
+                  
+        if form.is_valid():
+            form.save()
+            cleaned_data = form.cleaned_data
+            produit_name = cleaned_data['stock'].designation_s  
+            year_of_vente = cleaned_data['date_v'].year
+            
+            qte_v = cleaned_data['qte_v']
+            prix_unitaireVT = cleaned_data['prix_unitaireVT']
+            montant_v = cleaned_data['montant_v']
+              
+            stock_product = Stock.objects.get(designation_s=produit_name)
+            stock_product.qte_s -= qte_v
+            stock_product.save()
+            if stock_product.qte_s<=0:
+               
+                success_message = f"Le produit {produit_name} est retiré du stock ."
+            else :
+                success_message = f"Le produit {produit_name}  est encore en stock ."
+                
+            
+            
+            
+
+            stock_product.save()
+
+            client_code= cleaned_data['client'].code_cl
+            client= Client.objects.get(code_cl=client_code)
+            client.credit+=(qte_v*prix_unitaireVT)-montant_v
+            client.save()
+            vente = form.save(commit=False)
+            vente.save()
+           
+            
+           
+            messages.success(request, success_message)
+            form = VenteForm()
+            return render(request,"main-store/ventes/venteAdd.html",{"form":form})
+            
+    else:
+        form = VenteForm()
+    return render(request,"main-store/ventes/venteAdd.html",{"form":form,})
+##modifier vente
+    
+def modifier_vente(request,pk):
+    vente=Vente.objects.get(num_v=pk)
+    
+    
+    initial_montant=vente.montant_v
+    if request.method=='POST':
+        form=VenteEditForm(request.POST,instance=vente)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+           
+            
+            
+            client=vente.client
+           
+
+            montant = cleaned_data['montant_v']   
+           
+            difference = montant - initial_montant
+            if difference != 0:
+                client.credit -= difference
+                client.save()
+
+                
+            form.save()
+            return redirect("venteList")
+    else:
+        form=VenteEditForm(instance=vente)
+        return render(request,'main-store/ventes/venteEdit.html',{"form":form})
+##supprimer vente
+def supprimer_vente(request,pk):
+    vente=Vente.objects.get(num_v=pk)   
+    if request.method=='POST':     
+            client = vente.client
+            qte_v = vente.qte_v
+            prix_unitaireVT = vente.prix_unitaireVT
+            montant_v = vente.montant_v
+            if vente.type_Paiement_v=='Partiel':
+                client.credit-=(qte_v*prix_unitaireVT)-montant_v
+                client.save()
+            stock=vente.stock
+            
+            
+            stock.qte_s+=qte_v
+            stock.save()
+                
+            vente.delete()
+               
+            return redirect("venteList")  
+    else:          
+        return render(request,'main-store/ventes/venteDelete.html',{"vente":vente})
+
+##imprimer vente
+def imprimer_vente(request):
+    lignes = [["Numéro", "Date","Produit","Quantité","prix unitaire","client","Type paiement","Montant versé"]] 
+
+    ventes = Vente.objects.all()
+    for vente in ventes:
+        ligne_vente= [
+            f"{vente.num_v}",
+            f"{vente.date_v}",
+            f"{vente.stock}",
+            f"{vente.qte_v}",
+            f"{vente.prix_unitaireVT }",
+            f"{vente.client}",
+            f"{vente.type_Paiement_v}",
+            f"{vente.montant_v}",
+            
+        ]
+        lignes.append(ligne_vente)
+
+    pdf_filename = 'Ventes.pdf'
+
+    # Create a PDF using ReportLab
+    pdf_buffer = io.BytesIO()
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = []
+
+    # Title at the top center
+    title_style = styles['Title']
+    title = Paragraph("Liste des ventes", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 20))  #
+
+    # Current date on the right
+    date_style = styles['Normal']
+    current_date =  datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    date_paragraph = Paragraph(f"Date: {current_date}", date_style)
+    elements.append(date_paragraph)
+    elements.append(Spacer(1, 20))  
+
+    col_widths = [50,80,80,50,70,100,80,80]
     table_style = [
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),

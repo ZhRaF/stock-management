@@ -57,6 +57,8 @@ class Client(models.Model):
     adresse_cl = models.CharField(max_length=100)
     telephone_cl = models.CharField(max_length=50)
     credit = models.FloatField(default=0.0)
+    def __str__(self):
+        return f"{self.nom_cl} {self.prenom_cl}"
 
 
 class Paiement_credit(models.Model):
@@ -70,18 +72,19 @@ class Vente(models.Model):
     num_v = models.AutoField(primary_key=True)
     qte_v = models.IntegerField()
     date_v = models.DateField()
+    prix_unitaireVT = models.FloatField(default=0)
     type_choices=[
          ('Entier', 'Entier'),
         ('Partiel', 'Partiel'),
     ]
-    type_paiement_v = models.CharField(max_length=20,choices=type_choices,default='Entier')
+    type_Paiement_v = models.CharField(max_length=20,choices=type_choices)
     montant_v = models.FloatField()
     client = models.ForeignKey(Client,on_delete=models.CASCADE)
-    produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock,on_delete=models.CASCADE,null=True, default=None)
 from center.models import Centre
 
 class Transfert(models.Model):
     qte_t = models.IntegerField()
     date_t= models.DateField()
-    produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock,on_delete=models.CASCADE)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)

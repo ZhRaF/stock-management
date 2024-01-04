@@ -1,6 +1,6 @@
 from django.db.models import fields
 from django import forms
-from .models import Produit, Stock 
+from .models import Produit, Stock, Vente 
 from .models import Client 
 from .models import Fournisseur
 from .models import Achat
@@ -114,5 +114,70 @@ class StockForm(forms.ModelForm):
             'prix_achat' : 'Prix d achat:',
             'qte_s':'Quantité:',
             
+
+        }
+
+
+class VenteForm(forms.ModelForm):
+  
+    class Meta:
+        model=Vente
+        
+        fields=['date_v','stock','qte_v','prix_unitaireVT','client','type_Paiement_v','montant_v']
+        labels = {
+            
+            'date_v':'Date:',
+            'stock':'Produit:',
+            'qte_v':'Quantité',
+            'prix_unitaireVT':'Prix Unitaire:',
+            'client':'Client:',
+            'type_Paiement_v':'Paiement:',
+            'montant_v':'Montant versé:',
+
+
+        }
+    
+        widgets = {
+            'date_v': forms.DateInput(attrs={'type': 'date'}),  
+
+
+        }
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        qte_v = cleaned_data.get('qte_v')
+        prix_unitaireVT = cleaned_data.get('prix_unitaireVT')
+        montant_v = cleaned_data.get('montant_v')
+        type_Paiement_v = cleaned_data.get('type_Paiement_v')
+
+        if type_Paiement_v == 'Partiel' and (montant_v is None or montant_v >=qte_v * prix_unitaireVT):
+            raise forms.ValidationError("Le montant versé doit être inférieur au montant total")
+
+        return cleaned_data
+    def clean_montant_v(self):
+        montant_v = self.cleaned_data.get('montant_v')
+        qte_v = self.cleaned_data.get('qte_v')
+        prix_unitaireVT = self.cleaned_data.get('prix_unitaireVT')
+        type_Paiement_v = self.cleaned_data.get('type_Paiement_v')
+
+        if montant_v is None or montant_v == '':
+            if type_Paiement_v == 'Entier':
+                montant_v = qte_v * prix_unitaireVT
+
+        return montant_v
+class VenteEditForm(forms.ModelForm):
+  
+    class Meta:
+        model=Vente
+        
+        fields=['type_Paiement_v','montant_v']
+        labels = {
+            
+            
+            
+            'type_Paiement_v':'Paiement:',
+            'montant_v':'Montant versé:',
+
 
         }

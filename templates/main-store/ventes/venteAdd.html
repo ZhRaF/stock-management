@@ -1,0 +1,107 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Ajouter ventes {%endblock%}
+{%load crispy_forms_tags%}
+{%block content%}
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+                <i class="fa-solid fa-plus me-1"></i>
+                <h5 class="mb-0">Ajouter une nouvelle vente</h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top: 20px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-5"></div>
+</div>
+<div class="row" style="padding-top: 15px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        {% for message in messages%}
+        {%if message%}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {%endif%}
+        {%endfor%}
+
+
+        <form method="POST">
+            {%csrf_token%}
+            {{form|crispy}}
+            <div class="row">
+                <div class="col-md-5">
+                    <span id="totalLabel" style="font-weight: 700;">Total: </span>
+                    <span id="totalResult" style="font-weight: 700;"></span>
+                </div>
+                <div class="col-md-7 text-end">
+                    <a class="btn btn-secondary me-2" id="grey-btn" href="{% url 'venteList' %}">Annuler</a>
+                    <input class="btn btn-success" id="green-btn" type="submit" value="Valider">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="col-md-7"></div>
+
+    {%endblock%}
+    {%block scripts%}
+    <script>
+        $(document).ready(function () {
+
+            $('#id_stock').select2();
+            $('#id_client').select2();
+
+
+
+
+
+            $('#id_type_Paiement_v').change(function () {
+                function calculateMontant() {
+                    var qte_v = parseFloat($('#id_qte_v').val());
+                    var prix_unitaireVT = parseFloat($('#id_prix_unitaireVT').val());
+
+                    if (!isNaN(qte_v) && !isNaN(prix_unitaireVT)) {
+                        $('#id_montant_v').val(qte_v * prix_unitaireVT);
+                    }
+                }
+                $('#id_prix_unitaireVT').on('input', calculateMontant);
+                $('#id_qte_v').on('input', calculateMontant);
+
+                var selectedValue = $(this).val();
+                if (selectedValue === 'Partiel') {
+                    $('#id_montant_v').prop('readonly', false);
+
+                } else {
+                    calculateMontant();
+
+                    $('#id_montant_v ').prop('readonly', true);
+                }
+            });
+            $('#id_qte_v, #id_prix_unitaireVT').on('input', function () {
+                var qte = parseFloat($('#id_qte_v').val()) || 0;
+                var prixunitaire = parseFloat($('#id_prix_unitaireVT').val()) || 0;
+
+                var total = qte * prixunitaire;
+                $('#totalResult').text(total.toFixed(2));
+                if (!isNaN(total) && total !== 0) {
+                    $('#totalSection').show();
+                } else {
+                    $('#totalSection').hide();
+                }
+            });
+
+        });
+
+    </script>
+    {%endblock%}
