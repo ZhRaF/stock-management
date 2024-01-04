@@ -30,9 +30,12 @@ urlpatterns=[
     path('achatFournisseur/',views.achat_fournisseur,name='achatFournisseur'),
     path('achatDelete/<int:pk>/',views.supprimer_achat,name='achatDelete'),
     path('achatEdit/<int:pk>/',views.modifier_achat,name='achatEdit'),
+    path('achatPrint',views.imprimer_achat,name='achatPrint'),
 
     path('stockList/',views.afficher_stock,name='stockList'),
     path('stockEdit/<int:pk>/',views.modifier_stock,name='stockEdit'),
     path('stockDelete/<int:pk>/',views.supprimer_stock,name='stockDelete'),
+    path('stockPrint',views.imprimer_stock,name='stockPrint'),
+
       
 ]

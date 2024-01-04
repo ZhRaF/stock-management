@@ -514,6 +514,70 @@ def supprimer_achat(request,pk):
     else:          
         return render(request,'main-store/achats/achatDelete.html',{"achat":achat})
     
+##imprimer achat
+def imprimer_achat(request):
+    lignes = [["Numéro", "Date","Produit","Quantité","prix unitaire","fournisseur","Type paiement","Montant versé"]]  # Header row
+
+    achats = Achat.objects.all()
+    for achat in achats:
+        ligne_achat= [
+            f"{achat.num_a}",
+            f"{achat.date_a}",
+            f"{achat.produit}",
+            f"{achat.qte_a}",
+            f"{achat.prix_unitaireHT }",
+            f"{achat.fournisseur}",
+            f"{achat.type_Paiement_A}",
+            f"{achat.montant_A}",
+            
+        ]
+        lignes.append(ligne_achat)
+
+    pdf_filename = 'Achats.pdf'
+
+    # Create a PDF using ReportLab
+    pdf_buffer = io.BytesIO()
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = []
+
+    # Title at the top center
+    title_style = styles['Title']
+    title = Paragraph("Liste des achats", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 20))  #
+
+    # Current date on the right
+    date_style = styles['Normal']
+    current_date =  datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    date_paragraph = Paragraph(f"Date: {current_date}", date_style)
+    elements.append(date_paragraph)
+    elements.append(Spacer(1, 20))  
+
+    col_widths = [50,80,80,50,70,100,80,80]
+    table_style = [
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),  # Left padding for cells
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),  # Right padding for cells
+        ('BOX', (0, 0), (-1, -1), 0.5, colors.black),  # Add box/borders around the table
+    ]
+
+    table = Table(lignes, style=table_style, colWidths=col_widths)
+    elements.append(table)
+    pdf.build(elements)
+
+    # Prepare the response
+    pdf_buffer.seek(0)
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+
+    return response  
+    
 #############stock#############
 #liste stock
 
@@ -552,3 +616,68 @@ def supprimer_stock(request,pk):
             return redirect("stockList")  
     else:          
         return render(request,'main-store/stock/stockDelete.html',{"stock":stock})
+##imprimer etat du stock
+
+def imprimer_stock(request):
+    lignes = [["Produit", "Quantité","Fournisseur","Dates d'achat","prix d'achat"]]  # Header row
+    stocks = Stock.objects.all()
+    for stock in stocks:
+        achats = stock.achat.all() 
+        
+        fournisseurs = "\n".join([achat.fournisseur.nom_f for achat in achats])  
+        dates = "\n".join([str(achat.date_a) for achat in achats])
+
+        ligne_stock = [
+        f"{stock.designation_s}",
+        f"{stock.qte_s}",
+        f"{fournisseurs}", 
+        f"{dates}",
+        f"{stock.prix_achat}"
+
+        ]
+        lignes.append(ligne_stock)
+
+    pdf_filename = 'Stock.pdf'
+
+    # Create a PDF using ReportLab
+    pdf_buffer = io.BytesIO()
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = []
+
+    # Title at the top center
+    title_style = styles['Title']
+    title = Paragraph("LEtat du stock", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 20))  #
+
+    # Current date on the right
+    date_style = styles['Normal']
+    current_date =  datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    date_paragraph = Paragraph(f"Date: {current_date}", date_style)
+    elements.append(date_paragraph)
+    elements.append(Spacer(1, 20))  
+
+    col_widths = [100,50,100,150,60]
+    table_style = [
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),  # Left padding for cells
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),  # Right padding for cells
+        ('BOX', (0, 0), (-1, -1), 0.5, colors.black),  # Add box/borders around the table
+    ]
+
+    table = Table(lignes, style=table_style, colWidths=col_widths)
+    elements.append(table)
+    pdf.build(elements)
+
+    # Prepare the response
+    pdf_buffer.seek(0)
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+
+    return response  
