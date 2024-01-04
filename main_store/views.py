@@ -10,6 +10,7 @@ from .forms import ProduitForm
 from .forms import FournisseurForm
 from .forms import ClientForm
 from .forms import AchatForm
+from .filters import AchatFilter, stockFilter
 from django.contrib import messages
 from django.http import FileResponse
 import io
@@ -24,6 +25,7 @@ from reportlab.lib import colors
 from reportlab.platypus import Paragraph
 import datetime
 from reportlab.platypus import Spacer
+from django.db.models import F, ExpressionWrapper, DecimalField, Sum
 
 
 # Create your views here.
@@ -376,8 +378,19 @@ def imprimer_client(request):
 
 def afficher_achat(request):
     
-    achats=Achat.objects.all()
-    return render(request,"main-store/achats/achatList.html",{"achats":achats})
+    achats = Achat.objects.all()
+    myFilter = AchatFilter(request.GET, queryset=achats)
+
+    
+    achats = myFilter.qs
+
+    achats = achats.annotate(
+        montant_total=ExpressionWrapper(F('qte_a') * F('prix_unitaireHT'), output_field=DecimalField())
+    )
+    total_montant_total = achats.aggregate(total=Sum('montant_total'))['total']
+
+    context={"achats":achats,'myFilter':myFilter,'total_montant_total': total_montant_total, }
+    return render(request,"main-store/achats/achatList.html",context)
 
 #ajouter achat
 
@@ -506,8 +519,21 @@ def supprimer_achat(request,pk):
 
 def afficher_stock(request):
     
-    stocks=Stock.objects.all()
-    return render(request,"main-store/stock/stockList.html",{"stocks":stocks})
+    stocks = Stock.objects.all()
+    myFilter = stockFilter(request.GET, queryset=stocks)
+
+    
+    stocks = myFilter.qs
+
+    stocks = stocks.annotate(
+        montant_total=ExpressionWrapper(F('qte_s') * F('prix_achat'), output_field=DecimalField())
+    )
+    total_montant_total = stocks.aggregate(total=Sum('montant_total'))['total']
+
+    context={"stocks":stocks,'myFilter':myFilter,'total_montant_total': total_montant_total, }
+    return render(request,"main-store/stock/stockList.html",context)
+
+##modifier stock
 def modifier_stock(request,pk):
     stock=Stock.objects.get(num_s=pk)
     if request.method=='POST':

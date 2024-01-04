@@ -26,22 +26,64 @@
 
                 </div>
                 <div class="col-md-5">
-                    <form class="d-flex">
-                        <input class="form-control me-2" name="q" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="submit"><i
-                                class="fa-solid fa-magnifying-glass"></i></button>
 
-                    </form>
                 </div>
+
                 <div class="col-md-2 d-flex justify-content-end">
                     <a class="btn btn-secondary btn-sm" href="#"><i class="fa-solid fa-print me-1 ms-1"></i></a>
+
+                </div>
+            </div>
+            <button class="btn  btn-toggle align-items-center link-custom  collapsed" id="filter-toggle"
+                data-bs-toggle="collapse" data-bs-target="#achat-collapse" aria-expanded="true">
+                Filtres
+            </button>
+            <div class="collapse " id="achat-collapse">
+                <div class="row" style="padding-top: 20px;">
+
+                    <form method="get" style="display: inline;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="id_start_date">Produit:</label>
+                                    {{ myFilter.form.designation_s }}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="id_start_date">Fournisseur:</label>
+                                    {{ myFilter.form.fournisseur }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 15px;">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="id_start_date">Date début:</label>
+                                    {{ myFilter.form.start_date }}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="id_start_date">Date fin:</label>
+                                    {{ myFilter.form.end_date }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-sm" style="margin-top: 15px;"
+                            type="submit">Appliquer</button>
+
+
+                    </form>
 
                 </div>
             </div>
         </div>
 
         <!-- card end -->
+        <hr style="width: 100%;">
         <table class="table table-hover bg-white">
             <thead>
                 <tr>
@@ -49,6 +91,8 @@
 
                     <th>Produit</th>
                     <th>Quantité</th>
+                    <th>Fournisseurs</th>
+                    <th>Date d'achat</th>
                     <th>Prix d'achat</th>
                     <th>Modifier</th>
                     <th>Supprimer</th>
@@ -61,7 +105,33 @@
 
                     <td class="col-md-1">{{stock.designation_s}}</td>
                     <td class="col-md-2">{{stock.qte_s}}</td>
-                    <td class="col-md-2">{{stock.prix_achat}}</td>
+
+                    <td class="col-md-3">
+                        <table>
+                            <tbody>
+                                {% for achat in stock.achat.all %}
+                                <tr>
+                                    <td>{{ achat.fournisseur }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+
+                    <td class="col-md-3">
+                        <table>
+                            <tbody>
+                                {% for achat in stock.achat.all %}
+                                <tr>
+                                    <td>{{ achat.date_a}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+
+
+                    <td class="col-md-1">{{stock.prix_achat}}</td>
 
                     <td class="col-md-1"><a class="btn btn-secondary btn-sm" href="{%url 'stockEdit' stock.num_s %}">
                             <i class="fa-solid fa-pen-to-square"></i></a></td>
@@ -70,6 +140,17 @@
                         </a></td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td class="col-md-1" style="font-weight: 600;">Total</td>
+
+                    <td class="col-md-2"></td>
+                    <td class="col-md-3"></td>
+                    <td class="col-md-3"></td>
+                    <td class="col-md-1" style="font-weight: 600;">{{ total_montant_total }}
+                    </td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                </tr>
             </tbody>
 
         </table>

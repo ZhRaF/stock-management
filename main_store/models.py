@@ -46,7 +46,7 @@ class Achat(models.Model):
     montant_A = models.FloatField()
     prix_unitaireHT = models.FloatField()
     fournisseur= models.ForeignKey(Fournisseur, on_delete = models.CASCADE)
-    stock = models.ForeignKey(Stock ,on_delete = models.CASCADE, null=True, default=None)
+    stock = models.ForeignKey(Stock ,on_delete = models.CASCADE, null=True, default=None,related_name='achat')
     produit = models.ForeignKey(Produit ,on_delete = models.CASCADE)
 
 

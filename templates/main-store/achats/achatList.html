@@ -1,6 +1,7 @@
 {%extends 'main-store/base/baseStore.html' %}
 {%block title%}Journal achats {%endblock%}
 {%block content%}
+{%load crispy_forms_tags%}
 {% load mathfilters %}
 <div class="row">
     <div class="col-md-1"></div>
@@ -22,26 +23,75 @@
         <!-- card -->
         <div class="card border-0">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <a class="btn btn-secondary btn-sm" id="green-btn" href="{% url 'achatAdd'%}">
                         <i class="fa-solid fa-plus me-1"></i>Nouveaux achats
                     </a>
 
                 </div>
-                <div class="col-md-5">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="submit"><i
-                                class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="col-md-8">
 
-                    </form>
                 </div>
-                <div class="col-md-2 d-flex justify-content-end">
+                <div class="col-md-1 d-flex justify-content-end">
                     <a class="btn btn-secondary btn-sm" href="#"><i class="fa-solid fa-print me-1 ms-1"></i></a>
 
                 </div>
             </div>
+            <button class="btn  btn-toggle align-items-center link-custom  collapsed" id="filter-toggle"
+                data-bs-toggle="collapse" data-bs-target="#achat-collapse" aria-expanded="true">
+                Filtres
+            </button>
+            <div class="collapse " id="achat-collapse">
+                <div class="row" style="padding-top: 20px;">
+
+                    <form method="get" style="display: inline;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="id_start_date">{{ myFilter.form.start_date.label_tag }}</label>
+                                    {{ myFilter.form.start_date }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="id_end_date">{{ myFilter.form.end_date.label_tag }}</label>
+                                    {{ myFilter.form.end_date }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="id_type_Paiement_A">paiement:</label>
+                                    {{ myFilter.form.type_Paiement_A }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="id_product_name">{{ myFilter.form.product_name.label_tag }}</label>
+                                    {{ myFilter.form.product_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="id_fournisseur_name">Fournisseur:</label>
+                                    {{ myFilter.form.fournisseur_name }}
+                                </div>
+                            </div>
+
+                        </div>
+                        <button class="btn btn-primary btn-block btn-sm" style="margin-top: 15px;"
+                            type="submit">Appliquer</button>
+
+
+                    </form>
+
+                </div>
+            </div>
         </div>
+
+
+        <hr style="width: 100%;">
 
         <!-- card end -->
         <table class="table table-hover bg-white">
@@ -81,7 +131,22 @@
                             <i class="fa-solid fa-trash"></i>
                         </a></td>
                 </tr>
+
                 {% endfor %}
+                <tr>
+                    <td class="col-md-1" style="font-weight: 600;">Total</td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-2"> </td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1" style="font-weight: 600;">{{ total_montant_total }}
+                    </td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                </tr>
             </tbody>
 
         </table>
@@ -90,4 +155,13 @@
 </div>
 
 
+{%endblock%}
+{%block script%}
+<script>
+    $(document).ready(function () {
+        $("#toggleFormButton").click(function () {
+            $("#formSection").toggle();
+        });
+    });
+</script>
 {%endblock%}
