@@ -647,7 +647,7 @@ def imprimer_stock(request):
 
     # Title at the top center
     title_style = styles['Title']
-    title = Paragraph("LEtat du stock", title_style)
+    title = Paragraph("Etat du stock", title_style)
     elements.append(title)
     elements.append(Spacer(1, 20))  #
 
