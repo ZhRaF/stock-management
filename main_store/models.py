@@ -81,7 +81,9 @@ class Vente(models.Model):
 from center.models import Centre
 
 class Transfert(models.Model):
+    num_t= models.AutoField(primary_key=True)
     qte_t = models.IntegerField()
     date_t= models.DateField()
-    produit = models.ForeignKey(Produit,on_delete=models.CASCADE)
+    produit = models.ForeignKey(Stock,on_delete=models.CASCADE)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
+    montant_t = models.FloatField()

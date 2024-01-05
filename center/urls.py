@@ -16,4 +16,9 @@ urlpatterns=[
     path('clientDelete/<int:pk>/<int:centre>/',views.supprimer_client,name='clientDelete'),
     path('clientPrint/<int:centre>/',views.imprimer_clients,name='clientPrint'),
 
+    path('produitCentreList/<int:centre>/',views.afficher_produit_centre,name='produitCentreList'),
+    path('produitCentrePrint/<int:centre>/',views.imprimer_produit_centre,name='produitCentrePrint'),
+
+
+
 ]  

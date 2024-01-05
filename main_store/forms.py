@@ -4,6 +4,12 @@ from .models import Produit, Stock
 from .models import Client 
 from .models import Fournisseur
 from .models import Achat
+from .models import Reglement
+from .models import Transfert
+from .models import Paiement_credit
+
+
+
 
 
 class ProduitForm(forms.ModelForm):
@@ -101,3 +107,83 @@ class StockForm(forms.ModelForm):
             
 
         }
+from django import forms
+from .models import Reglement
+
+# forms.py
+class ReglementForm(forms.ModelForm):
+    class Meta:
+        model = Reglement
+        fields = ['date_r', 'montant_r']
+        labels = {
+            'date_r': 'Date:',
+            'montant_r': 'Montant versé:',
+        }
+        widgets = {
+            'date_r': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, fournisseur, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fournisseur = fournisseur  # Store the fournisseur instance
+
+    def clean(self):
+        cleaned_data = super().clean()
+        montant_r = cleaned_data.get('montant_r')
+
+        if montant_r is not None and self.fournisseur is not None:
+            if montant_r > self.fournisseur.solde:
+                raise forms.ValidationError("Le montant versé doit être égal ou inferieur au solde du fournisseur.")
+
+        return cleaned_data
+
+class Paiement_creditForm(forms.ModelForm):
+    class Meta:
+        model = Paiement_credit
+        fields = ['date_pc', 'montant_cl']
+        labels = {
+            'date_pc': 'Date:',
+            'montant_cl': 'Montant versé:',
+        }
+        widgets = {
+            'date_pc': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, client, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client = client  # Store the client instance
+
+    def clean(self):
+        cleaned_data = super().clean()
+        montant_cl = cleaned_data.get('montant_cl')
+
+        if montant_cl is not None and self.client is not None:
+            if montant_cl > self.client.credit:
+                raise forms.ValidationError("Le montant versé doit être égal ou inferieur au credit du client.")
+
+        return cleaned_data
+    
+class TransfertForm(forms.ModelForm):
+    class Meta:
+        model = Transfert
+        fields = ['date_t', 'produit','centre','qte_t']
+        labels = {
+            'date_t': 'Date:',
+            'produit': 'produit:',
+            'centre':'centre',
+            'qte_t':'quantite',
+        }
+        widgets = {
+            'date_t': forms.DateInput(attrs={'type': 'date'}),
+        }
+    def clean(self):
+        cleaned_data = super().clean()
+        qte = cleaned_data.get('qte_t')
+        produit = cleaned_data.get('produit')
+
+        if qte is not None and produit is not None:
+            if qte > produit.qte_s:
+                raise forms.ValidationError(f"La quantité doit être inferieure ou egale a la quantite du stock{produit.qte_s}.")
+
+        return cleaned_data
+

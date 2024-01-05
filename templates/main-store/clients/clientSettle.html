@@ -1,0 +1,55 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Reglement client {%endblock%}
+{%load crispy_corms_tags%}
+{%block content%}
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+                <i class="fa-solid fa-plus me-1"></i>
+                <h5 class="mb-0">Regler {{name}}</h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top: 20px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-5"></div>
+</div>
+<div class="row" style="padding-top: 15px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        {% for message in messages%}
+        {%if message%}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {%endif%}
+        {%endfor%}
+
+
+        <form method="POST">
+            {%csrf_token%}
+            {{form|crispy}}
+            
+            <div class="row">
+                <div class=" text-end d-flex justify-content-between">
+                    <div id="totalLabel" style="font-weight: 500; padding:3px 5px;" class="bg-danger d-flex rounded-3 text-white justify-content-center ">credit : {{credit}} </div>
+                    <a class="btn btn-secondary me-2" id="grey-btn" href="{% url 'clientSettleList' %}">Annuler</a>
+                    <input class="btn btn-success" id="green-btn" type="submit" value="Valider">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="col-md-7"></div>
+
+    {%endblock%}
