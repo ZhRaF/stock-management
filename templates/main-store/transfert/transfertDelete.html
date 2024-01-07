@@ -1,0 +1,73 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Supprimer transfert {%endblock%}
+{%load crispy_forms_tags%}
+{%block content%}
+
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+
+                <h5 class="mb-0">Le transfert suivant va être supprimé : </h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="d-flex align-items-center" style="padding-top: 20px;">
+            <p><strong>Numéro: </strong>
+            <p>
+
+            <p>{{transfert.num_t}}</p>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Date : </strong></p>
+
+            <p>{{transfert.date_t}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Produit: </strong></p>
+
+            <p>{{transfert.produit}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Quantité: </strong></p>
+
+            <p>{{transfert.qte_t}}</p>
+
+
+        </div>
+
+        <div class="d-flex align-items-center">
+            <p><strong>Montant : </strong></p>
+
+            <p>{{transfert.montant_t}}</p>
+
+
+        </div>
+
+        <div class="d-flex align-items-center">
+            <form method="POST">
+                {% csrf_token %}
+
+                <a class="btn btn-secondary" href=" {% url 'transfertList' %}"> Annuler</a>
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+            </form>
+
+
+        </div>
+        <div class="col-md-7"></div>
+        {%endblock%}

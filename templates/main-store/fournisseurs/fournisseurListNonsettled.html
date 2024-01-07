@@ -1,0 +1,82 @@
+{%extends 'main-store/base/baseStore.html' %}
+{%block title%}Liste Fournisseurs non réglés{%endblock%}
+{%block content%}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div class="d-flex align-items-center" style="padding-top: 50px;">
+            <i class="fa-solid fa-truck-field me-2" style="margin-top: 6px;"></i>
+
+            <h4 class="mb-0">Fournisseurs non réglés</h4>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- table element -->
+
+<div class="row" style="padding-top: 30px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <!-- card -->
+        <div class="card border-0">
+            <div class="row justify-content-between">
+                <div class="col-md-5 ml-2">
+                    <form class="d-flex">
+                        <input class="form-control me-2" name="q" type="search" placeholder="Search"
+                            aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+
+                    </form>
+                </div>
+                <div class="col-md-2 d-flex justify-content-end mr-2">
+                    <a class="btn btn-secondary btn-sm" href="{%url 'fournisseurPrintNonSettled' %}"><i
+                            class="fa-solid fa-print me-1 ms-1"></i></a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- card end -->
+        <table class="table table-hover bg-white">
+            <thead>
+                <tr>
+
+                    <th>Code</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Adresse</th>
+                    <th>Téléphone</th>
+                    <th>Solde</th>
+                    <th>Regler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fournisseur in fournisseurs %}
+                <tr>
+
+                    <td class="col-md-1">{{fournisseur.code_f}}</td>
+                    <td class="col-md-2">{{fournisseur.nom_f}}</td>
+                    <td class="col-md-2">{{fournisseur.prenom_f }}</td>
+                    <td class="col-md-2">{{fournisseur.adresse_f }}</td>
+                    <td class="col-md-2">{{fournisseur.telephone_f}}</td>
+                    <td class="col-md-1">{{fournisseur.solde }}</td>
+                    <td class="col-md-1">
+                        <a class="btn btn-danger btn-sm" href="{%url 'fournisseurSettle' fournisseur.code_f %}">
+                            <i class="fa-solid fa-money-check-dollar"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+{%endblock%}

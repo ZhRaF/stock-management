@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.db.models import Q
-from .models import Employe
+from .models import Employe, produits_centre
 from .models import Centre
 from .models import ClientC as Client
 from .forms import EmployeForm
@@ -240,6 +240,82 @@ def imprimer_clients(request, centre):
     elements.append(Spacer(1, 20))
 
     col_widths = [40, 100, 100, 120, 100, 60]  # Adjusted column widths
+    table_style = [
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),  # Left padding for cells
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),  # Right padding for cells
+        ('BOX', (0, 0), (-1, -1), 0.5, colors.black),  # Add box/borders around the table
+    ]
+
+    table = Table(lignes, style=table_style, colWidths=col_widths)
+    elements.append(table)
+    pdf.build(elements)
+
+    # Prepare the response
+    pdf_buffer.seek(0)
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+
+    return response
+
+def afficher_produit_centre(request, centre):
+    produits = produits_centre.objects.filter(centre=centre)
+
+    if 'q' in request.GET:
+        q = request.GET['q']
+        # Perform case-insensitive search on designation_pc and code_pc
+        multiple_q = Q(designation_pc__icontains=q) | Q(code_pc__icontains=q)
+        produits = produits.filter(multiple_q)
+
+    return render(request, "center/produits/produitCentreList.html", {"produits": produits, "centre": centre})
+
+def imprimer_produit_centre(request, centre):
+    lignes = [["Code", "Designation", "Quantite"]]  # Header row
+
+    produits = produits_centre.objects.filter(centre=centre)
+
+    # Create a PDF using ReportLab
+    pdf_buffer = io.BytesIO()
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+
+    # Define styles here
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    # Current date on the right
+    date_style = styles['Normal']
+    current_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    for produit in produits:
+        ligne_produit = [
+            f"{produit.code_pc}",
+            f"{produit.designation_pc}",
+            f"{produit.qte_pc}",
+        ]
+        lignes.append(ligne_produit)
+
+    pdf_filename = f'produitsCentre_{centre}_{current_date}.pdf'
+
+    # Title at the top center
+    title_style = styles['Title']
+    title = Paragraph(f"Liste des produits de centre {centre}", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 20))
+
+    # Current date on the right
+    date_paragraph = Paragraph(f"Date: {current_date}", date_style)
+    elements.append(date_paragraph)
+    elements.append(Spacer(1, 20))
+
+    # Adjusted column widths
+    col_widths = [50, 200, 100]  # Adjust the values based on your preferences
+
     table_style = [
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#95c089')),

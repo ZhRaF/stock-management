@@ -65,7 +65,7 @@ class Paiement_credit(models.Model):
     num_pc = models.AutoField(primary_key=True)
     date_pc = models.DateField()
     montant_cl = models.FloatField()
-    Client = models.ForeignKey(Client ,on_delete = models.CASCADE)
+    client = models.ForeignKey(Client ,on_delete = models.CASCADE)
     
 
 class Vente(models.Model):
@@ -84,7 +84,9 @@ class Vente(models.Model):
 from center.models import Centre
 
 class Transfert(models.Model):
+    num_t= models.AutoField(primary_key=True,default=0)
     qte_t = models.IntegerField()
     date_t= models.DateField()
-    stock = models.ForeignKey(Stock,on_delete=models.CASCADE)
+    produit  = models.ForeignKey(Stock,on_delete=models.CASCADE)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
+    montant_t = models.FloatField(default=0.0)

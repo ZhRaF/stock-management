@@ -19,8 +19,9 @@ class Centre(models.Model):
 
 
 class produits_centre(models.Model):
-    Code_pc = models.AutoField(primary_key=True)
+    code_pc = models.AutoField(primary_key=True)
     designation_pc = models.CharField(max_length=50)
+    qte_pc = models.IntegerField(default=0)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
 
 
