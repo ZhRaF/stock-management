@@ -1,0 +1,102 @@
+{%extends 'center/base/baseCenter.html' %}
+{%block title%}Supprimer vente {%endblock%}
+{%load crispy_forms_tags%}
+{% load mathfilters %}
+{%block content%}
+
+<div class="row ">
+    <div class="col-md-1"></div>
+    <div class="col-md-11">
+        <div>
+            <div class="d-flex align-items-center" style="padding-top: 50px;">
+
+
+                <h5 class="mb-0">La vente suivant va être supprimée : </h5>
+
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="d-flex align-items-center" style="padding-top: 20px;">
+            <p><strong>Numéro: </strong>
+            <p>
+
+            <p>{{vente.num_vc}}</p>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Date : </strong></p>
+
+            <p>{{vente.date_vc}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Produit: </strong></p>
+
+            <p>{{vente.produit}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Quantité: </strong></p>
+
+            <p>{{vente.qte_vc}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Prix unitaire: </strong></p>
+
+            <p>{{vente.prix_unitaireVTC}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Client: </strong></p>
+
+            <p>{{vente.client}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Paiement: </strong></p>
+
+            <p>{{vente.type_Paiement_vc}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Montant versé: </strong></p>
+
+            <p>{{vente.montant_vc}}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <p><strong>Montant total: </strong></p>
+
+            <p>{% with total_amount=vente.qte_vc|mul:vente.prix_unitaireVTC %}
+                {{ total_amount }}
+                {% endwith %}</p>
+
+
+        </div>
+        <div class="d-flex align-items-center">
+            <form method="POST">
+                {% csrf_token %}
+
+                <a class="btn btn-secondary" href=" {% url 'venteCentreList' centre=centre %}"> Annuler</a>
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+            </form>
+
+
+        </div>
+        <div class="col-md-7"></div>
+        {%endblock%}

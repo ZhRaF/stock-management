@@ -19,4 +19,12 @@ urlpatterns=[
     path('produitCentreList/<int:centre>/',views.afficher_produit_centre,name='produitCentreList'),
     path('produitCentrePrint/<int:centre>/',views.imprimer_produit_centre,name='produitCentrePrint'),
 
+    
+    path('venteCentreList/<int:centre>/',views.afficher_vente,name='venteCentreList'),
+    path('venteCentreAdd/<int:centre>/',views.ajouter_vente,name='venteCentreAdd'),
+    path('venteCentreEdit/<int:pk>/<int:centre>/',views.modifier_vente,name='venteCentreEdit'),
+    path('venteCentreDelete/<int:pk>/<int:centre>/',views.supprimer_vente,name='venteCentreDelete'),
+    path('venteCentrePrint/<int:centre>/',views.imprimer_vente,name='venteCentrePrint'),
+    
+
 ]  

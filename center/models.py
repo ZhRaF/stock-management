@@ -23,7 +23,8 @@ class produits_centre(models.Model):
     designation_pc = models.CharField(max_length=50)
     qte_pc = models.IntegerField(default=0)
     centre = models.ForeignKey(Centre,on_delete=models.CASCADE)
-
+    def __str__(self):
+        return self.designation_pc
 
 class Employe(models.Model):
     code_e = models.AutoField(primary_key=True)
@@ -42,7 +43,8 @@ class ClientC(models.Model):
     telephone_cl = models.CharField(max_length=50)
     credit = models.FloatField(default=0.0)
     centre = models.ForeignKey(Centre, on_delete=models.CASCADE, null=True)
-
+    def __str__(self):
+        return f"{self.nom_cl} {self.prenom_cl}"
 
 
 class VenteCentre(models.Model):
@@ -53,9 +55,11 @@ class VenteCentre(models.Model):
          ('Entier', 'Entier'),
         ('Partiel', 'Partiel'),
     ]
+    prix_unitaireVTC = models.FloatField(default=0)
     type_Paiement_vc = models.CharField(max_length=20,choices=type_choices,default='Entier')
     montant_vc = models.FloatField()   
     client = models.ForeignKey(ClientC,on_delete=models.CASCADE)
     produit = models.ForeignKey(produits_centre,on_delete=models.CASCADE)
+    centre = models.ForeignKey(Centre,on_delete=models.CASCADE,null=True, default=None)
 
     

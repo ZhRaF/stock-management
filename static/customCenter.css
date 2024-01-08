@@ -1,3 +1,16 @@
+th {
+
+    font-weight: 600;
+}
+
+label {
+    font-weight: 600;
+}
+
+#id {
+    margin-top: 100px;
+}
+
 body {
     min-height: 100vh;
     min-height: -webkit-fill-available;
@@ -122,4 +135,13 @@ hr {
     border-color: #9a9ea3 !important;
     color: #ffffff !important;
 
+}
+
+#filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    color: black;
+    background-color: transparent;
+    border: 0;
 }
